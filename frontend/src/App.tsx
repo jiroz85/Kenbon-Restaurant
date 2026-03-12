@@ -5,10 +5,11 @@ import { RoleGuard } from "./components/RoleGuard";
 import { MainLayout } from "./layouts/MainLayout";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
-import { Dashboard } from "./pages/Dashboard";
+import { RoleBasedDashboard } from "./pages/RoleBasedDashboard";
 import { Orders } from "./pages/Orders";
 import { OrderDetail } from "./pages/OrderDetail";
 import { Menu } from "./pages/Menu";
+import { MenuWithTable } from "./pages/MenuWithTable";
 import { Kitchen } from "./pages/Kitchen";
 import { Delivery } from "./pages/Delivery";
 import { Inventory } from "./pages/Inventory";
@@ -32,10 +33,11 @@ function App() {
             }
           >
             <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="dashboard" element={<RoleBasedDashboard />} />
             <Route path="orders" element={<Orders />} />
             <Route path="orders/:id" element={<OrderDetail />} />
             <Route path="menu" element={<Menu />} />
+            <Route path="menu/table" element={<MenuWithTable />} />
             <Route
               path="kitchen"
               element={

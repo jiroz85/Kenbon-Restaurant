@@ -134,9 +134,13 @@ export function Kitchen() {
                 <span className={statusBadgeClass(order.status)}>
                   {order.status}
                 </span>
-                <span style={{ fontSize: "0.85rem", color: "#94a3b8" }}>
-                  {new Date(order.createdAt).toLocaleTimeString()}
-                </span>
+                <div style={{ fontSize: "0.85rem", color: "#94a3b8" }}>
+                  {order.type === "DINE_IN"
+                    ? `Table ${order.table?.label || "N/A"}`
+                    : order.customerName
+                      ? order.customerName
+                      : `Order #${order.id.slice(0, 8)}`}
+                </div>
               </div>
             </div>
             <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>

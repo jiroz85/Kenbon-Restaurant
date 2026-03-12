@@ -10,7 +10,7 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  @Roles('WAITER', 'MANAGER', 'ADMIN')
+  @Roles('CUSTOMER', 'WAITER', 'MANAGER', 'ADMIN')
   create(@Body() dto: CreateOrderDto, @Req() req: any) {
     const userId = req.user.id as string;
     return this.ordersService.create(dto, userId);
@@ -22,14 +22,26 @@ export class OrdersController {
     return this.ordersService.findAll();
   }
 
+  @Get('customer/:customerId')
+  @Roles('CUSTOMER', 'WAITER', 'MANAGER', 'ADMIN')
+  findByCustomer(@Param('customerId') customerId: string, @Req() req: any) {
+    // Customers can only see their own orders
+    if (req.user.roles.includes('CUSTOMER') && req.user.id !== customerId) {
+      throw new Error('Unauthorized');
+    }
+    return this.ordersService.findByCustomer(customerId);
+  }
+
   @Get('stats')
-  @Roles('ADMIN', 'MANAGER')
-  getStats() {
+  @Roles('ADMIN', 'MANAGER', 'CASHIER', 'DELIVERY', 'KITCHEN', 'WAITER')
+  getStats(@Req() req: any) {
+    console.log('User accessing stats:', req.user);
+    console.log('User roles:', req.user.roles);
     return this.ordersService.getStats();
   }
 
   @Get('status/:status')
-  @Roles('WAITER', 'MANAGER', 'ADMIN', 'KITCHEN', 'CASHIER')
+  @Roles('WAITER', 'MANAGER', 'ADMIN', 'KITCHEN', 'CASHIER', 'DELIVERY')
   findByStatus(@Param('status') status: OrderStatus) {
     return this.ordersService.findByStatus(status);
   }
@@ -41,9 +53,8 @@ export class OrdersController {
   }
 
   @Patch(':id/status')
-  @Roles('WAITER', 'MANAGER', 'ADMIN', 'KITCHEN', 'CASHIER')
+  @Roles('WAITER', 'MANAGER', 'ADMIN', 'KITCHEN', 'CASHIER', 'DELIVERY')
   updateStatus(@Param('id') id: string, @Body() dto: UpdateOrderStatusDto) {
     return this.ordersService.updateStatus(id, dto);
   }
 }
-

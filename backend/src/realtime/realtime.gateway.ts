@@ -16,6 +16,15 @@ export class RealtimeGateway {
   }
 
   emitOrderStatusUpdated(order: Order) {
-    this.server.emit('order.statusUpdated', order);
+    console.log('RealtimeGateway: Emitting order.statusUpdated event:', {
+      orderId: order.id,
+      status: order.status,
+      createdBy: order.createdBy?.id,
+      connectedClients: this.server.engine.clientsCount,
+    });
+
+    // Emit to all clients
+    const result = this.server.emit('order.statusUpdated', order);
+    console.log('RealtimeGateway: Emit result:', result);
   }
 }

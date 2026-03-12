@@ -136,14 +136,44 @@ export class OrdersService {
     });
   }
 
+  findByCustomer(customerId: string) {
+    return this.ordersRepository.find({
+      where: { createdBy: { id: customerId } },
+      relations: ['items', 'items.menuItem', 'table', 'createdBy'],
+      order: { createdAt: 'DESC' },
+    });
+  }
+
   async updateStatus(id: string, dto: UpdateOrderStatusDto) {
-    const order = await this.ordersRepository.findOne({ where: { id } });
+    console.log('OrdersService: Updating order status:', {
+      id,
+      status: dto.status,
+    });
+
+    const order = await this.ordersRepository.findOne({
+      where: { id },
+      relations: ['createdBy', 'items', 'table'],
+    });
+
     if (!order) {
       throw new NotFoundException('Order not found');
     }
+
+    console.log('OrdersService: Found order:', {
+      id: order.id,
+      currentStatus: order.status,
+      createdBy: order.createdBy?.id,
+    });
+
     order.status = dto.status;
     const saved = await this.ordersRepository.save(order);
+
+    console.log(
+      'OrdersService: Order status updated, emitting WebSocket event:',
+      { id: saved.id, newStatus: saved.status },
+    );
     this.realtimeGateway.emitOrderStatusUpdated(saved);
+
     return saved;
   }
 
