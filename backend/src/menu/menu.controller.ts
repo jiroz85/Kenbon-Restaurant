@@ -1,10 +1,19 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { Roles } from '../auth/roles.decorator';
+import { Public } from '../auth/public.decorator';
 
 @Controller('menu')
 export class MenuController {
@@ -18,6 +27,7 @@ export class MenuController {
   }
 
   @Get('categories')
+  @Public()
   findAllCategories() {
     return this.menuService.findAllCategories();
   }
@@ -42,6 +52,7 @@ export class MenuController {
   }
 
   @Get('items')
+  @Public()
   findAllItems() {
     return this.menuService.findAllItems();
   }

@@ -104,12 +104,12 @@ export function Login() {
           <p className="login-footer">
             Don&apos;t have an account? <Link to="/register">Register</Link>
           </p>
-          <div className="login-back-home">
-            <Link to="/" className="back-home-btn">
-              ← Back to Home
-            </Link>
-          </div>
         </form>
+        <div className="login-back-home">
+          <Link to="/" className="back-home-btn">
+            ← Back to Home
+          </Link>
+        </div>
       </div>
     </div>
   );

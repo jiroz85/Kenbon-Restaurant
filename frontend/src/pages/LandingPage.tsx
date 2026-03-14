@@ -1,12 +1,34 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "../hooks/useAuth";
+import { api } from "../lib/api";
 import "./LandingPage.css";
 
+type MenuItem = {
+  id: string;
+  name: string;
+  description?: string;
+  price: string;
+  isAvailable: boolean;
+  category: { name: string };
+  image?: string;
+  variants?: { id: string; name: string; price: string }[];
+  addons?: { id: string; name: string; price: string }[];
+};
+
+type Category = {
+  id: string;
+  name: string;
+  description?: string;
+};
+
 export function LandingPage() {
+  const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [specialIndex, setSpecialIndex] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState("starters");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentTime, setCurrentTime] = useState(new Date());
   const [weather] = useState<"sunny" | "rainy" | "cloudy" | "cold">("sunny");
   const [typedText, setTypedText] = useState("");
@@ -16,6 +38,11 @@ export function LandingPage() {
     guests: "2",
     requests: "",
   });
+
+  // Debug: Check auth state changes
+  useEffect(() => {
+    console.log("LandingPage - Auth state:", { isAuthenticated, isLoading });
+  }, [isAuthenticated, isLoading]);
 
   // Generate particles once on mount to avoid Math.random in render
   const [particles] = useState(() =>
@@ -285,139 +312,38 @@ export function LandingPage() {
     },
   ];
 
-  const menuCategories = {
-    starters: [
-      {
-        name: "Oysters Rockefeller",
-        price: "$24",
-        description: "Six fresh oysters with spinach and hollandaise",
-        spiceLevel: "mild",
-        prepTime: "15 min",
-      },
-      {
-        name: "Foie Gras Torchon",
-        price: "$38",
-        description: "With brioche and fig compote",
-        spiceLevel: "mild",
-        prepTime: "20 min",
-      },
-      {
-        name: "Burrata Caprese",
-        price: "$22",
-        description: "Heirloom tomatoes and basil oil",
-        spiceLevel: "mild",
-        prepTime: "10 min",
-      },
-    ],
-    mains: [
-      {
-        name: "Grilled Salmon",
-        price: "$46",
-        description: "With lemon butter sauce and asparagus",
-        spiceLevel: "mild",
-        prepTime: "25 min",
-      },
-      {
-        name: "Ribeye Steak",
-        price: "$89",
-        description: "With bone marrow butter and fries",
-        spiceLevel: "medium",
-        prepTime: "30 min",
-      },
-      {
-        name: "Vegetarian Wellington",
-        price: "$42",
-        description: "Mushrooms and spinach in puff pastry",
-        spiceLevel: "mild",
-        prepTime: "35 min",
-      },
-    ],
-    desserts: [
-      {
-        name: "Crème Brûlée",
-        price: "$18",
-        description: "Classic vanilla with caramelized sugar",
-        spiceLevel: "mild",
-        prepTime: "5 min",
-      },
-      {
-        name: "Tiramisu",
-        price: "$20",
-        description: "Espresso-soaked ladyfingers and mascarpone",
-        spiceLevel: "mild",
-        prepTime: "5 min",
-      },
-      {
-        name: "Fruit Tart",
-        price: "$16",
-        description: "Seasonal fruits with pastry cream",
-        spiceLevel: "mild",
-        prepTime: "5 min",
-      },
-    ],
-    beverages: [
-      {
-        name: "House Wine",
-        price: "$12/glass",
-        description: "Red or white selection",
-        spiceLevel: "mild",
-        prepTime: "2 min",
-      },
-      {
-        name: "Craft Cocktails",
-        price: "$18",
-        description: "Mixologist's special creations",
-        spiceLevel: "mild",
-        prepTime: "8 min",
-      },
-      {
-        name: "Artisan Coffee",
-        price: "$8",
-        description: "Single-origin espresso drinks",
-        spiceLevel: "mild",
-        prepTime: "5 min",
-      },
-    ],
-  };
+  // API calls for real menu data
+  const { data: categories = [] } = useQuery<Category[]>({
+    queryKey: ["menu", "categories"],
+    queryFn: async () => {
+      const { data } = await api.get<Category[]>("/menu/categories");
+      return data;
+    },
+  });
 
-  const testimonials = [
-    {
-      text: "One of the most memorable dining experiences I've had.",
-      rating: 5,
-      author: "Sarah Mitchell",
-      date: "Visited this week",
+  const { data: menuItems = [] } = useQuery<MenuItem[]>({
+    queryKey: ["menu", "items"],
+    queryFn: async () => {
+      const { data } = await api.get<MenuItem[]>("/menu/items");
+      return data;
     },
-    {
-      text: "Exceptional cuisine and impeccable service.",
-      rating: 5,
-      author: "James Chen",
-      date: "Visited last week",
-    },
-    {
-      text: "Every dish tells a story. Absolutely extraordinary.",
-      rating: 5,
-      author: "Maria Rodriguez",
-      date: "Visited this month",
-    },
-  ];
+  });
 
-  const pressMentions = [
-    {
-      publication: "Michelin Guide",
-      award: "Recommended Restaurant 2024",
-      year: "2024",
+  // Group items by category
+  const itemsByCategory = menuItems.reduce(
+    (acc: Record<string, MenuItem[]>, item: MenuItem) => {
+      const category = item.category.name;
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(item);
+      return acc;
     },
-    {
-      publication: "Wine Spectator",
-      award: "Award of Excellence",
-      year: "2023",
-    },
-    {
-      publication: "Fine Dining Magazine",
-      award: "Top 50 Restaurants",
-      year: "2024",
-    },
-  ];
+    {} as Record<string, MenuItem[]>,
+  );
+
+  const filteredItems =
+    selectedCategory === "all"
+      ? menuItems
+      : itemsByCategory[selectedCategory] || [];
 
   const socialIndicators = useMemo(() => {
     const baseReserved = 24;
@@ -474,6 +400,13 @@ export function LandingPage() {
               onClick={(e) => handleSmoothScroll(e, "menu")}
             >
               Menu
+            </button>
+            <button
+              type="button"
+              className="hero-nav-link"
+              onClick={(e) => handleSmoothScroll(e, "entertainment")}
+            >
+              Entertainment
             </button>
             <button
               type="button"
@@ -688,99 +621,103 @@ export function LandingPage() {
         <div className="container">
           <h2 className="section-title">Menu Preview</h2>
           <div className="menu-categories">
-            {Object.keys(menuCategories).map((category) => (
+            <button
+              className={`category-btn ${selectedCategory === "all" ? "active" : ""}`}
+              onClick={() => setSelectedCategory("all")}
+            >
+              All Items
+            </button>
+            {categories.map((category: Category) => (
               <button
-                key={category}
-                className={`category-btn ${selectedCategory === category ? "active" : ""}`}
-                onClick={() => setSelectedCategory(category)}
+                key={category.id}
+                className={`category-btn ${selectedCategory === category.name ? "active" : ""}`}
+                onClick={() => setSelectedCategory(category.name)}
               >
-                {category.charAt(0).toUpperCase() + category.slice(1)}
+                {category.name}
               </button>
             ))}
           </div>
           <div className="menu-items">
-            {menuCategories[
-              selectedCategory as keyof typeof menuCategories
-            ].map((item, index) => (
-              <div key={index} className="menu-item">
-                <div className="menu-item-image">
-                  <div
-                    className={`image-placeholder menu-image-${index}`}
-                  ></div>
-                </div>
-                <div className="menu-item-info">
-                  <h4 className="menu-item-name">{item.name}</h4>
-                  {item.description && (
-                    <p className="menu-item-description">{item.description}</p>
-                  )}
-                  <div className="menu-item-meta">
-                    <span className={`spice-level spice-${item.spiceLevel}`}>
-                      {item.spiceLevel === "mild"
-                        ? "🌶️"
-                        : item.spiceLevel === "medium"
-                          ? "🌶️🌶️"
-                          : "🌶️🌶️🌶️"}{" "}
-                      {item.spiceLevel}
-                    </span>
-                    <span className="prep-time">⏱️ {item.prepTime}</span>
+            {filteredItems
+              .filter((item: MenuItem) => item.isAvailable)
+              .map((item: MenuItem, index: number) => (
+                <div key={item.id} className="menu-item">
+                  <div className="menu-item-image">
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="menu-item-img"
+                      />
+                    ) : (
+                      <div
+                        className={`image-placeholder menu-image-${index}`}
+                      ></div>
+                    )}
                   </div>
-                  <p className="menu-item-price">{item.price}</p>
+                  <div className="menu-item-info">
+                    <h4 className="menu-item-name">{item.name}</h4>
+                    {item.description && (
+                      <p className="menu-item-description">
+                        {item.description}
+                      </p>
+                    )}
+                    <div className="menu-item-meta">
+                      <span className="category-tag">{item.category.name}</span>
+                      {item.isAvailable ? (
+                        <span className="available-badge">✓ Available</span>
+                      ) : (
+                        <span className="unavailable-badge">✗ Unavailable</span>
+                      )}
+                    </div>
+                    <p className="menu-item-price">${item.price}</p>
+                    <Link to="/login" className="menu-order-btn" replace>
+                      Order Now
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION 7 - SOCIAL EVIDENCE GALLERY */}
-      <section id="social" className="social-section">
+      {/* SECTION 7 - ENTERTAINMENT EXPERIENCES */}
+      <section id="entertainment" className="entertainment-section">
         <div className="container">
-          <h2 className="section-title">Guest Experiences</h2>
-          <div className="testimonials-grid">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="testimonial-card">
-                <div className="rating">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={i} className="star">
-                      ★
-                    </span>
-                  ))}
-                </div>
-                <p className="testimonial-text">"{testimonial.text}"</p>
-                <div className="testimonial-author">
-                  <div className="author-avatar">
-                    <div className="avatar-placeholder"></div>
-                  </div>
-                  <div className="author-info">
-                    <p className="author-name">{testimonial.author}</p>
-                    <p className="author-date">{testimonial.date}</p>
-                  </div>
-                </div>
+          <h2 className="section-title">Entertainment Experiences</h2>
+          <div className="entertainment-grid">
+            {/* Pool Table Section */}
+            <div className="entertainment-card pool-table-card">
+              <div className="entertainment-image">
+                <div className="image-placeholder pool-player-image"></div>
               </div>
-            ))}
-          </div>
-          <div className="social-photos">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="social-photo">
-                <div className={`image-placeholder social-photo-${i}`}></div>
+              <div className="entertainment-content">
+                <h3 className="entertainment-title">Pool Table</h3>
+                <p className="entertainment-description">
+                  Challenge your friends to a game of pool while enjoying
+                  premium drinks and snacks. Our professional-grade tables and
+                  vibrant atmosphere create the perfect setting for friendly
+                  competition and memorable moments.
+                </p>
+                <button className="entertainment-cta">Play Now</button>
               </div>
-            ))}
-          </div>
-          <div className="press-awards">
-            <h3 className="press-title">Recognition & Awards</h3>
-            <div className="awards-grid">
-              {pressMentions.map((award, index) => (
-                <div key={index} className="award-card">
-                  <div className="award-logo">
-                    <div className="logo-placeholder"></div>
-                  </div>
-                  <div className="award-info">
-                    <h4 className="award-publication">{award.publication}</h4>
-                    <p className="award-name">{award.award}</p>
-                    <p className="award-year">{award.year}</p>
-                  </div>
-                </div>
-              ))}
+            </div>
+
+            {/* TV Watching Section */}
+            <div className="entertainment-card tv-watching-card">
+              <div className="entertainment-image">
+                <div className="image-placeholder tv-watching-image"></div>
+              </div>
+              <div className="entertainment-content">
+                <h3 className="entertainment-title">Sports & Entertainment</h3>
+                <p className="entertainment-description">
+                  Gather with friends to catch live sports, movies, and your
+                  favorite shows on our large-screen TVs. Enjoy premium dining
+                  service while cheering for your team or watching the big game
+                  in our comfortable lounge area.
+                </p>
+                <button className="entertainment-cta">Watch Now</button>
+              </div>
             </div>
           </div>
         </div>

@@ -113,12 +113,8 @@
 .image-placeholder.chef,
 .image-placeholder.dining,
 .image-placeholder.ingredients,
-.image-placeholder.social-photo-0,
-.image-placeholder.social-photo-1,
-.image-placeholder.social-photo-2,
-.image-placeholder.social-photo-3,
-.image-placeholder.social-photo-4,
-.image-placeholder.social-photo-5 {
+.image-placeholder.pool-player-image,
+.image-placeholder.tv-watching-image {
   background: none !important;
 }
 
@@ -254,38 +250,18 @@
     center/cover !important;
 }
 
-/* Social Photos - Restaurant Experience */
-.image-placeholder.social-photo-0 {
-  background: url("https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=400&fit=crop&auto=format")
+/* Entertainment Images */
+.image-placeholder.pool-player-image {
+  background: url("https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=600&h=400&fit=crop&auto=format")
     center/cover !important;
 }
 
-.image-placeholder.social-photo-1 {
-  background: url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=400&fit=crop&auto=format")
+.image-placeholder.tv-watching-image {
+  background: url("https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?w=600&h=400&fit=crop&auto=format")
     center/cover !important;
 }
 
-.image-placeholder.social-photo-2 {
-  background: url("https://images.unsplash.com/photo-1464454189791-216650e3d5d4?w=400&h=400&fit=crop&auto=format")
-    center/cover !important;
-}
-
-.image-placeholder.social-photo-3 {
-  background: url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=400&fit=crop&auto=format")
-    center/cover !important;
-}
-
-.image-placeholder.social-photo-4 {
-  background: url("https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=400&h=400&fit=crop&auto=format")
-    center/cover !important;
-}
-
-.image-placeholder.social-photo-5 {
-  background: url("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=400&fit=crop&auto=format")
-    center/cover !important;
-}
-
-/* Kitchen Video Placeholder */
+/* SECTION 8 - ELEGANT RESERVATION SUITE */
 .video-placeholder.kitchen-video {
   background: url("https://images.unsplash.com/photo-1556911220-bff31c8ab6cd?w=1200&h=600&fit=crop&auto=format")
     center/cover;
@@ -427,7 +403,7 @@
 }
 
 .hero-title::after {
-  content: "|";
+  content: "";
   position: absolute;
   right: -10px;
   color: var(--warm-gold);
@@ -447,7 +423,7 @@
 }
 
 .hero-subtitle {
-  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.3rem);
   font-weight: 400;
   margin-bottom: 2rem;
   opacity: 0.95;
@@ -478,60 +454,71 @@
 
 .hero-actions {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .cta-primary,
 .cta-secondary,
 .cta-tertiary {
-  padding: 1rem 2.5rem;
+  padding: 0.6rem 1.5rem;
   border: none;
-  border-radius: 50px;
-  font-size: 1.1rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
   display: inline-block;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
 }
 
 .cta-primary {
-  background: var(--warm-gold);
+  background: linear-gradient(135deg, var(--warm-gold), #d4af37);
   color: var(--white);
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .cta-primary:hover {
-  background: #c4a030;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, #c4a030, var(--warm-gold));
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
 }
 
 .cta-secondary {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.1);
   color: var(--white);
-  border: 2px solid var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .cta-secondary:hover {
-  background: var(--white);
-  color: var(--deep-charcoal);
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+  transform: translateY(-1px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
 }
 
 .cta-tertiary {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.05);
   color: var(--white);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  padding: 0.8rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  backdrop-filter: blur(8px);
 }
 
 .cta-tertiary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--white);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px) scale(1.02);
 }
 
 .live-indicators {
@@ -767,7 +754,7 @@ section.animate-in {
 /* Stagger animation for cards */
 .signature-card,
 .menu-item,
-.testimonial-card {
+.entertainment-card {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.6s ease;
@@ -775,7 +762,7 @@ section.animate-in {
 
 section.animate-in .signature-card,
 section.animate-in .menu-item,
-section.animate-in .testimonial-card {
+section.animate-in .entertainment-card {
   opacity: 1;
   transform: translateY(0);
 }
@@ -843,30 +830,6 @@ section.animate-in .signature-card:nth-child(6) {
 
 .menu-item:hover .menu-item-name {
   color: var(--warm-gold);
-}
-
-/* Enhanced testimonial cards */
-.testimonial-card {
-  background: var(--white);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-}
-
-.testimonial-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-}
-
-.rating {
-  color: var(--warm-gold);
-  margin-bottom: 1rem;
-}
-
-.star {
-  font-size: 1.2rem;
-  margin-right: 2px;
 }
 
 /* Parallax effects for journey section */
@@ -1244,112 +1207,213 @@ section.animate-in .signature-card:nth-child(6) {
 
 .menu-item-info {
   padding: 1.5rem;
+  background: #ffffff !important;
+  position: relative;
+  z-index: 1;
 }
 
 .menu-item-name {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
-  color: var(--deep-charcoal);
+  color: #1a1a1a !important;
+  font-weight: 600;
 }
 
 .menu-item-description {
-  color: var(--medium-gray);
+  color: #666666 !important;
   margin-bottom: 1rem;
   font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .menu-item-price {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--warm-gold);
-}
-
-/* SECTION 7 - SOCIAL EVIDENCE GALLERY */
-.social-section {
-  padding: 6rem 0;
-  background: var(--white);
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 4rem;
-}
-
-.testimonial-card {
-  background: var(--soft-cream);
-  padding: 2rem;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.rating {
   margin-bottom: 1rem;
 }
 
-.star {
-  color: var(--warm-gold);
-  font-size: 1.2rem;
-}
-
-.testimonial-text {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.1rem;
-  font-style: italic;
-  margin-bottom: 1.5rem;
-  color: var(--dark-gray);
-}
-
-.testimonial-author {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.author-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.author-avatar .avatar-placeholder {
-  width: 100%;
-  height: 100%;
-  background: url("https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&auto=format")
-    center/cover;
-}
-
-.author-name {
-  font-weight: 600;
+.menu-order-btn {
+  display: inline-block;
+  background: var(--warm-gold);
   color: var(--deep-charcoal);
-}
-
-.author-date {
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
   font-size: 0.9rem;
-  color: var(--medium-gray);
+  text-align: center;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.social-photos {
+.menu-order-btn:hover {
+  background: #b8941f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+/* SECTION 7 - ENTERTAINMENT EXPERIENCES */
+.entertainment-section {
+  padding: 6rem 0;
+  background: linear-gradient(135deg, #faf8f3 0%, #f5f5f5 100%);
+}
+
+.entertainment-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+  margin-top: 3rem;
 }
 
-.social-photo {
-  height: 200px;
-  border-radius: 12px;
+.entertainment-card {
+  background: var(--white);
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+  position: relative;
 }
 
-.social-photo
-  .image-placeholder:not(.social-photo-0):not(.social-photo-1):not(
-    .social-photo-2
-  ):not(.social-photo-3):not(.social-photo-4):not(.social-photo-5) {
-  background: linear-gradient(135deg, #f0f0f0, #d0d0d0);
+.entertainment-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.entertainment-card:hover .entertainment-image .image-placeholder {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+.entertainment-card:hover .entertainment-cta {
+  background: #b8941f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+}
+
+.entertainment-card:hover .entertainment-title {
+  color: var(--warm-gold);
+}
+
+.entertainment-image {
+  height: 280px;
+  overflow: hidden;
+  position: relative;
+}
+
+.entertainment-image .image-placeholder {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.entertainment-content {
+  padding: 2.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.entertainment-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--deep-charcoal);
+  margin-bottom: 1.5rem;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.entertainment-title::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--warm-gold);
+  border-radius: 2px;
+}
+
+.entertainment-description {
+  color: #666666;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  flex: 1;
+}
+
+.entertainment-cta {
+  background: var(--warm-gold);
+  color: var(--deep-charcoal);
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  align-self: flex-start;
+}
+
+.entertainment-cta:hover {
+  background: #b8941f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .entertainment-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .entertainment-card {
+    margin: 0 1rem;
+  }
+
+  .entertainment-image {
+    height: 200px;
+  }
+
+  .entertainment-content {
+    padding: 2rem;
+  }
+
+  .entertainment-title {
+    font-size: 1.5rem;
+  }
+
+  .entertainment-description {
+    font-size: 1rem;
+  }
+
+  .entertainment-cta {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .entertainment-section {
+    padding: 4rem 0;
+  }
+
+  .entertainment-content {
+    padding: 1.5rem;
+  }
+
+  .entertainment-title {
+    font-size: 1.3rem;
+  }
 }
 
 /* SECTION 8 - ELEGANT RESERVATION SUITE */
@@ -1762,8 +1826,43 @@ html {
 
 .signature-card,
 .menu-item,
-.testimonial-card {
+.entertainment-card {
   animation: fadeIn 0.6s ease forwards;
+}
+
+.menu-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-tag {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--warm-gold);
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.available-badge {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.unavailable-badge {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 /* Menu item meta information */
@@ -1807,80 +1906,6 @@ html {
   font-size: 0.75rem;
 }
 
-/* Press & Awards Section */
-.press-awards {
-  margin-top: 4rem;
-  padding-top: 3rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-.press-title {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 3rem;
-  color: var(--deep-charcoal);
-}
-
-.awards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.award-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background: var(--soft-cream);
-  padding: 1.5rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.award-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.award-logo {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.award-logo .logo-placeholder {
-  width: 100%;
-  height: 100%;
-  background: url("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=120&h=60&fit=crop&auto=format")
-    center/cover;
-}
-
-.award-info {
-  flex: 1;
-}
-
-.award-publication {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.1rem;
-  margin-bottom: 0.3rem;
-  color: var(--deep-charcoal);
-}
-
-.award-name {
-  font-weight: 600;
-  color: var(--warm-gold);
-  margin-bottom: 0.2rem;
-  font-size: 0.9rem;
-}
-
-.award-year {
-  color: var(--medium-gray);
-  font-size: 0.8rem;
-}
-
 /* Enhanced responsive design for new elements */
 @media (max-width: 768px) {
   .menu-item-meta {
@@ -1890,15 +1915,6 @@ html {
 
   .team-grid {
     grid-template-columns: 1fr;
-  }
-
-  .awards-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .award-card {
-    text-align: center;
-    flex-direction: column;
   }
 }
 
