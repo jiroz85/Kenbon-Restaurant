@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { getStatusBadgeClass } from "../constants/orderStatus";
+import "./Dashboard.css";
 
 type Stats = {
   totalOrders: number;

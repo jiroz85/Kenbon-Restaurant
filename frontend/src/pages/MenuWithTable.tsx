@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { TableQRCode } from "../components/TableQRCode";
+import "./MenuWithTable.css";
 
 type MenuItem = {
   id: string;
@@ -26,7 +27,6 @@ export function MenuWithTable() {
   >([]);
   const [customerName, setCustomerName] = useState("");
   const [notes, setNotes] = useState("");
-  const navigate = useNavigate();
 
   const tableId = searchParams.get("table");
 

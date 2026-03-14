@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import type { OrderStatus } from "../constants/orderStatus";
 import { getStatusBadgeClass } from "../constants/orderStatus";
+import "./Orders.css";
 
 type OrderType = "DINE_IN" | "TAKEAWAY" | "DELIVERY";
 

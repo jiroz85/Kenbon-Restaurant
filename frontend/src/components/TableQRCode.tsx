@@ -1,10 +1,4 @@
-import { useState } from 'react';
-
 export function TableQRCode({ tableId }: { tableId: string }) {
-  const [showMenu, setShowMenu] = useState(false);
-  
-  const qrUrl = `${window.location.origin}/menu?table=${tableId}`;
-  
   return (
     <div style={{
       position: 'fixed',
@@ -46,21 +40,6 @@ export function TableQRCode({ tableId }: { tableId: string }) {
       <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
         Table {tableId}
       </div>
-      <button
-        onClick={() => setShowMenu(!showMenu)}
-        style={{
-          marginTop: '0.5rem',
-          padding: '0.5rem 1rem',
-          background: '#3b82f6',
-          color: 'white',
-          border: 'none',
-          borderRadius: '0.25rem',
-          fontSize: '0.75rem',
-          cursor: 'pointer'
-        }}
-      >
-        {showMenu ? 'Hide Menu' : 'Show Menu'}
-      </button>
     </div>
   );
 }

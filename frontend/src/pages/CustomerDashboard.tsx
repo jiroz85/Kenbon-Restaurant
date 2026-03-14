@@ -140,17 +140,21 @@ export function CustomerDashboard() {
           console.log("Customer Dashboard: Using default notification class");
         }
 
-        setNotifications((prev) => [
-          ...prev,
-          { message, className: notificationClass },
-        ]);
+        setNotifications((prev) => {
+          const next = [...prev, { message, className: notificationClass }];
 
-        // Remove notification after 8 seconds for delivery notifications
-        const notificationDuration =
-          order.status === "OUT_FOR_DELIVERY" ? 8000 : 5000;
-        setTimeout(() => {
-          setNotifications((prev) => prev.filter((n) => n !== message));
-        }, notificationDuration);
+          // Remove notification after 8 seconds for delivery notifications
+          const notificationDuration =
+            order.status === "OUT_FOR_DELIVERY" ? 8000 : 5000;
+
+          setTimeout(() => {
+            setNotifications((current) =>
+              current.filter((n) => n.message !== message),
+            );
+          }, notificationDuration);
+
+          return next;
+        });
       } else {
         console.log(
           "Customer Dashboard: Order does not belong to current user, skipping notification",

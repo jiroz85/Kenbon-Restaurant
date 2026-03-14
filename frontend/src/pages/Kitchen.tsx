@@ -4,6 +4,7 @@ import { api } from "../lib/api";
 import type { OrderStatus } from "../constants/orderStatus";
 import { getStatusBadgeClass } from "../constants/orderStatus";
 import { getSocket } from "../lib/socket";
+import "./Kitchen.css";
 
 type OrderItem = {
   id: string;
@@ -19,6 +20,7 @@ type Order = {
   items: OrderItem[];
   grandTotal: string;
   createdAt: string;
+  customerName?: string;
 };
 
 async function fetchKitchenOrders(): Promise<Order[]> {

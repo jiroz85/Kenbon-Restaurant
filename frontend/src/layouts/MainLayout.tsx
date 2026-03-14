@@ -17,28 +17,32 @@ const NAV_ITEMS: { to: string; label: string; roles: string[] }[] = [
     ],
   },
   {
-    to: "/orders",
+    to: "/dashboard/orders",
     label: "Orders",
     roles: ["ADMIN", "MANAGER", "WAITER", "KITCHEN", "CASHIER"],
   },
   {
-    to: "/menu",
+    to: "/dashboard/menu",
     label: "Menu",
     roles: ["ADMIN", "MANAGER", "WAITER", "KITCHEN", "CASHIER", "CUSTOMER"],
   },
-  { to: "/kitchen", label: "Kitchen", roles: ["ADMIN", "MANAGER", "KITCHEN"] },
   {
-    to: "/delivery",
+    to: "/dashboard/kitchen",
+    label: "Kitchen",
+    roles: ["ADMIN", "MANAGER", "KITCHEN"],
+  },
+  {
+    to: "/dashboard/delivery",
     label: "Delivery",
     roles: ["ADMIN", "MANAGER", "DELIVERY"],
   },
   {
-    to: "/inventory",
+    to: "/dashboard/inventory",
     label: "Inventory",
     roles: ["ADMIN", "MANAGER", "KITCHEN"],
   },
-  { to: "/users", label: "Users", roles: ["ADMIN", "MANAGER"] },
-  { to: "/settings", label: "Settings", roles: ["ADMIN", "MANAGER"] },
+  { to: "/dashboard/users", label: "Users", roles: ["ADMIN", "MANAGER"] },
+  { to: "/dashboard/settings", label: "Settings", roles: ["ADMIN", "MANAGER"] },
 ];
 
 export function MainLayout() {

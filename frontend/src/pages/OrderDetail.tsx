@@ -5,6 +5,7 @@ import { api } from "../lib/api";
 import type { OrderStatus } from "../constants/orderStatus";
 import { getStatusBadgeClass } from "../constants/orderStatus";
 import { useAuth } from "../hooks/useAuth";
+import "./OrderDetail.css";
 
 type OrderItem = {
   id: string;

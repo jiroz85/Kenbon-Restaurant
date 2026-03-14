@@ -4,6 +4,7 @@ import { api } from "../lib/api";
 import type { OrderStatus } from "../constants/orderStatus";
 import { getStatusBadgeClass } from "../constants/orderStatus";
 import { getSocket } from "../lib/socket";
+import "./Delivery.css";
 
 type OrderItem = {
   id: string;

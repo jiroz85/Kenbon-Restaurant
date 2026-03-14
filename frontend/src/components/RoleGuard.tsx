@@ -12,7 +12,7 @@ export function RoleGuard({ children, allowedRoles }: RoleGuardProps) {
   const hasRole = allowedRoles.some((r) => roles.includes(r));
 
   if (!hasRole) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;
