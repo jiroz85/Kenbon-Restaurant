@@ -236,58 +236,6 @@ export function LandingPage() {
     return () => clearInterval(countdownInterval);
   }, []);
 
-  const signatureDishes = [
-    {
-      name: "Seared Scallops",
-      description: "Pan-seared with cauliflower purée and crispy pancetta",
-      price: "$42",
-      badge: "Chef's Special",
-      chefNotes: "Sourced from sustainable Atlantic fisheries",
-      pairing: "Champagne or dry white wine",
-    },
-    {
-      name: "Wagyu Beef Tenderloin",
-      description:
-        "28-day aged with truffle mashed potatoes and red wine reduction",
-      price: "$125",
-      badge: "Guest Favorite",
-      chefNotes: "Premium A5 grade Japanese Wagyu",
-      pairing: "Full-bodied red Bordeaux",
-    },
-    {
-      name: "Lobster Thermidor",
-      description: "Fresh Maine lobster with cognac cream and gruyère",
-      price: "$68",
-      badge: "Seasonal Selection",
-      chefNotes: "Live lobsters prepared daily",
-      pairing: "Chardonnay or Champagne",
-    },
-    {
-      name: "Duck Confit",
-      description: "Traditional French preparation with cherry gastrique",
-      price: "$54",
-      badge: "Classic",
-      chefNotes: "48-hour preparation process",
-      pairing: "Pinot Noir",
-    },
-    {
-      name: "Truffle Risotto",
-      description: "Arborio rice with black truffle and aged parmesan",
-      price: "$48",
-      badge: "Vegetarian",
-      chefNotes: "Fresh truffles flown in weekly",
-      pairing: "White Burgundy",
-    },
-    {
-      name: "Chocolate Soufflé",
-      description: "Dark chocolate with vanilla bean ice cream",
-      price: "$28",
-      badge: "Must Try",
-      chefNotes: "Prepared to order, 20 min wait",
-      pairing: "Port wine or espresso",
-    },
-  ];
-
   const dailySpecials = [
     {
       name: "Chef's Tasting Menu",
@@ -328,6 +276,63 @@ export function LandingPage() {
       return data;
     },
   });
+
+  // Get signature items from real menu data
+  const signatureDishes = useMemo(() => {
+    const starters = menuItems
+      .filter(
+        (item) =>
+          item.category.name.toLowerCase().includes("starter") ||
+          item.category.name.toLowerCase().includes("appetizer"),
+      )
+      .slice(0, 2);
+
+    const mains = menuItems
+      .filter(
+        (item) =>
+          item.category.name.toLowerCase().includes("main") ||
+          item.category.name.toLowerCase().includes("entree"),
+      )
+      .slice(0, 2);
+
+    const desserts = menuItems
+      .filter((item) => item.category.name.toLowerCase().includes("dessert"))
+      .slice(0, 1);
+
+    const drinks = menuItems
+      .filter(
+        (item) =>
+          item.category.name.toLowerCase().includes("drink") ||
+          item.category.name.toLowerCase().includes("beverage"),
+      )
+      .slice(0, 1);
+
+    // Transform menu items to signature dish format
+    const transformToSignature = (item: MenuItem, category: string) => ({
+      name: item.name,
+      description: item.description || "Delicious preparation from our kitchen",
+      price: `$${item.price}`,
+      badge: item.isPopular ? "Popular" : "Chef's Choice",
+      chefNotes: "Prepared with fresh ingredients",
+      pairing:
+        category === "starter"
+          ? "White wine"
+          : category === "main"
+            ? "Red wine"
+            : category === "dessert"
+              ? "Dessert wine"
+              : "Perfect match",
+      category: category,
+      id: item.id,
+    });
+
+    return [
+      ...starters.map((item) => transformToSignature(item, "starter")),
+      ...mains.map((item) => transformToSignature(item, "main")),
+      ...desserts.map((item) => transformToSignature(item, "dessert")),
+      ...drinks.map((item) => transformToSignature(item, "drink")),
+    ];
+  }, [menuItems]);
 
   // Group items by category
   const itemsByCategory = menuItems.reduce(
@@ -435,10 +440,26 @@ export function LandingPage() {
             muted
             loop
             playsInline
-            poster="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&h=1080&fit=crop&auto=format"
+            poster="https://images.unsplash.com/photo-1556911220-bff31c8ab6cd?w=1920&h=1080&fit=crop&auto=format"
           >
             <source
-              src="https://www.w3schools.com/html/mov_bbb.mp4"
+              src="https://assets.mixkit.co/videos/preview/mixkit-chef-cooking-in-a-modern-kitchen-39879-large.mp4"
+              type="video/mp4"
+            />
+            <source
+              src="https://assets.mixkit.co/videos/preview/mixkit-professional-chef-cooking-in-a-restaurant-kitchen-39875-large.mp4"
+              type="video/mp4"
+            />
+            <source
+              src="https://assets.mixkit.co/videos/preview/mixkit-chef-flipping-steak-in-a-sizzling-pan-39876-large.mp4"
+              type="video/mp4"
+            />
+            <source
+              src="https://assets.mixkit.co/videos/preview/mixkit-seasoning-a-grilled-steak-on-flames-46661-large.mp4"
+              type="video/mp4"
+            />
+            <source
+              src="https://assets.mixkit.co/videos/preview/mixkit-flipping-a-flame-grilled-steak-22768-large.mp4"
               type="video/mp4"
             />
           </video>
@@ -690,6 +711,7 @@ export function LandingPage() {
             <div className="entertainment-card pool-table-card">
               <div className="entertainment-image">
                 <div className="image-placeholder pool-player-image"></div>
+                <div className="entertainment-badge">Premium</div>
               </div>
               <div className="entertainment-content">
                 <h3 className="entertainment-title">Pool Table</h3>
@@ -699,6 +721,11 @@ export function LandingPage() {
                   vibrant atmosphere create the perfect setting for friendly
                   competition and memorable moments.
                 </p>
+                <div className="entertainment-features">
+                  <span className="feature-tag">🎱 Pro Tables</span>
+                  <span className="feature-tag">🍹 Premium Drinks</span>
+                  <span className="feature-tag">🎵 Music</span>
+                </div>
                 <button className="entertainment-cta">Play Now</button>
               </div>
             </div>
@@ -707,15 +734,22 @@ export function LandingPage() {
             <div className="entertainment-card tv-watching-card">
               <div className="entertainment-image">
                 <div className="image-placeholder tv-watching-image"></div>
+                <div className="entertainment-badge">DS TV</div>
               </div>
               <div className="entertainment-content">
-                <h3 className="entertainment-title">Sports & Entertainment</h3>
+                <h3 className="entertainment-title">DS TV</h3>
                 <p className="entertainment-description">
-                  Gather with friends to catch live sports, movies, and your
-                  favorite shows on our large-screen TVs. Enjoy premium dining
-                  service while cheering for your team or watching the big game
-                  in our comfortable lounge area.
+                  Experience the ultimate viewing destination with DS TV! Catch
+                  live sports, blockbuster movies, and your favorite shows on
+                  our massive 4K screens. Enjoy premium dining service while
+                  cheering for your team or watching the big game in our
+                  luxurious lounge atmosphere.
                 </p>
+                <div className="entertainment-features">
+                  <span className="feature-tag">📺 Live Sports</span>
+                  <span className="feature-tag">🎬 Movies</span>
+                  <span className="feature-tag">🍿 Premium Sound</span>
+                </div>
                 <button className="entertainment-cta">Watch Now</button>
               </div>
             </div>
@@ -835,9 +869,11 @@ export function LandingPage() {
               <div className="info-block">
                 <h3>Address</h3>
                 <p>
-                  123 Gourmet Avenue
+                  Addabaayii Bariisoo Dukkallee
                   <br />
-                  Culinary District, CD 12345
+                  (Bariso Dukale Square), Bule Hora
+                  <br />
+                  Ethiopia
                 </p>
               </div>
               <div className="info-block">
@@ -877,7 +913,7 @@ export function LandingPage() {
                   Call Now
                 </a>
                 <a
-                  href="https://maps.google.com/?q=123+Gourmet+Avenue+Culinary+District+CD+12345"
+                  href="https://maps.google.com/?q=Addabaayii+Bariisoo+Dukkallee+Bariso+Dukale+Square+Bule+Hora+Ethiopia"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="action-btn"
@@ -890,7 +926,17 @@ export function LandingPage() {
               </div>
             </div>
             <div className="map-container">
-              <div className="map-placeholder"></div>
+              <iframe
+                src="https://www.google.com/maps?q=Addabaayii+Bariisoo+Dukkallee+Bariso+Dukale+Square+Bule+Hora+Ethiopia&output=embed"
+                width="100%"
+                height="450"
+                style={{ border: 0, borderRadius: "0.5rem" }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Kenbon Restaurant Location"
+                className="google-map"
+              />
             </div>
           </div>
         </div>
