@@ -1,4 +1,5 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import "./MainLayout.css";
 
@@ -57,15 +58,39 @@ export function MainLayout() {
     item.roles.some((r) => userRoles.includes(r)),
   );
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/login", { replace: true });
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
   return (
-    <div className="main-layout">
-      <aside className="main-layout-sidebar">
+    <div className={`main-layout ${sidebarOpen ? "sidebar-open" : ""}`}>
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={closeSidebar}
+          aria-hidden="true"
+        />
+      )}
+      <button
+        type="button"
+        className="mobile-menu-toggle"
+        onClick={toggleSidebar}
+        aria-label="Toggle menu"
+      >
+        ☰
+      </button>
+      <aside className={`main-layout-sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="main-layout-brand">
           <span className="main-layout-brand-text">Kenbon</span>
         </div>
@@ -77,6 +102,7 @@ export function MainLayout() {
               className={({ isActive }) =>
                 `main-layout-nav-link ${isActive ? "main-layout-nav-link--active" : ""}`
               }
+              onClick={closeSidebar}
             >
               {label}
             </NavLink>

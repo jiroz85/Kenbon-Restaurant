@@ -1,5 +1,9 @@
 :root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -23,10 +27,14 @@ body {
   min-height: 100vh;
   background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
   color: inherit;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 #root {
   width: 100%;
+  overflow-x: hidden;
 }
 
 a {
@@ -36,4 +44,59 @@ a {
 
 button {
   font-family: inherit;
+}
+
+/* Mobile Image Optimization */
+@media (max-width: 768px) {
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  /* Optimize images for mobile data usage */
+  .menu-item-image,
+  .hero-video,
+  .signature-dish-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+@media (max-width: 480px) {
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    /* Slightly reduce quality for faster loading on small screens */
+    image-rendering: auto;
+  }
+
+  /* Lazy loading for mobile images */
+  img[data-src] {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  img[data-src].loaded {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 320px) {
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  /* Further optimization for very small screens */
+  .menu-item-image {
+    height: 120px !important;
+  }
+
+  .hero-video,
+  .video-background {
+    min-height: 240px;
+  }
 }
