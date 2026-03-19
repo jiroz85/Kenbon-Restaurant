@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api } from "./api";
 
 export type LoginCredentials = {
   usernameOrEmail: string;
@@ -25,17 +25,40 @@ export type AuthResponse = {
   user: AuthUser;
 };
 
-export async function login(credentials: LoginCredentials): Promise<AuthResponse> {
-  const { data } = await api.post<AuthResponse>('/auth/login', credentials);
+export async function login(
+  credentials: LoginCredentials,
+): Promise<AuthResponse> {
+  const { data } = await api.post<AuthResponse>("/auth/login", credentials);
   return data;
 }
 
-export async function register(payload: RegisterPayload): Promise<AuthResponse> {
-  const { data } = await api.post<AuthResponse>('/auth/register', payload);
+export async function register(
+  payload: RegisterPayload,
+): Promise<AuthResponse> {
+  const { data } = await api.post<AuthResponse>("/auth/register", payload);
   return data;
 }
 
 export async function refresh(refreshToken: string): Promise<AuthResponse> {
-  const { data } = await api.post<AuthResponse>('/auth/refresh', { refreshToken });
+  const { data } = await api.post<AuthResponse>("/auth/refresh", {
+    refreshToken,
+  });
+  return data;
+}
+
+export async function verifyEmail(token: string): Promise<{ message: string }> {
+  const { data } = await api.get<{ message: string }>(
+    `/auth/verify-email?token=${token}`,
+  );
+  return data;
+}
+
+export async function resendVerificationEmail(
+  email: string,
+): Promise<{ message: string }> {
+  const { data } = await api.post<{ message: string }>(
+    "/auth/resend-verification",
+    { email },
+  );
   return data;
 }

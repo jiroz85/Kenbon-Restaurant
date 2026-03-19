@@ -11,6 +11,13 @@ import { setAuthToken, setupApiAuth } from "../lib/api";
 import * as authApi from "../lib/auth";
 import type { AuthUser } from "../lib/auth";
 
+export type RegisterResponse = {
+  message?: string;
+  user?: AuthUser;
+  accessToken?: string;
+  refreshToken?: string;
+};
+
 const STORAGE_TOKEN = "kenbon_access_token";
 const STORAGE_REFRESH = "kenbon_refresh_token";
 const STORAGE_USER = "kenbon_user";
@@ -27,7 +34,7 @@ type AuthContextValue = AuthState & {
     email: string,
     username: string,
     password: string,
-  ) => Promise<void>;
+  ) => Promise<RegisterResponse>;
   logout: () => void;
   isAuthenticated: boolean;
 };
@@ -145,11 +152,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         username,
         password,
       });
+
+      // Check if registration requires email verification
+      if (res.message && res.message.includes("verify your email")) {
+        // Return response without setting tokens for email verification flow
+        return res;
+      }
+
+      // Staff account or already verified - proceed with normal login flow
       const rt = res.refreshToken ?? res.accessToken;
       setAuthToken(res.accessToken);
       refreshTokenRef.current = rt;
       saveStored(res.accessToken, rt, res.user);
       setState({ token: res.accessToken, user: res.user, isLoading: false });
+      return res;
     },
     [],
   );

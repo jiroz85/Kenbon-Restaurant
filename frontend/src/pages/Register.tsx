@@ -41,8 +41,22 @@ export function Register() {
 
     setSubmitting(true);
     try {
-      await doRegister(email.trim(), username.trim(), password);
-      navigate("/dashboard", { replace: true });
+      const response = await doRegister(
+        email.trim(),
+        username.trim(),
+        password,
+      );
+
+      // Check if registration requires email verification
+      if (response.message && response.message.includes("verify your email")) {
+        // Show verification required message
+        navigate("/verify-email-required", {
+          state: { email: email.trim(), message: response.message },
+        });
+      } else {
+        // Staff account or already verified - proceed to dashboard
+        navigate("/dashboard", { replace: true });
+      }
     } catch (err: unknown) {
       const ax =
         err && typeof err === "object" && "response" in err

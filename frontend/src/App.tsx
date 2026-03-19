@@ -19,6 +19,8 @@ import { Inventory } from "./pages/Inventory";
 import { Users } from "./pages/Users";
 import { Settings } from "./pages/Settings";
 import { AdminOrders } from "./pages/AdminOrders";
+import { VerifyEmail } from "./pages/VerifyEmail";
+import { VerifyEmailRequired } from "./pages/VerifyEmailRequired";
 import "./App.css";
 
 function App() {
@@ -31,6 +33,11 @@ function App() {
           <Route path="/order" element={<Order />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route
+            path="/verify-email-required"
+            element={<VerifyEmailRequired />}
+          />
           <Route
             path="/dashboard"
             element={

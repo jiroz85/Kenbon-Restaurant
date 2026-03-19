@@ -1,4 +1,11 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Role } from './role.entity';
 
 @Entity('users')
@@ -15,6 +22,15 @@ export class User {
   @Column()
   passwordHash: string;
 
+  @Column({ default: false })
+  isEmailVerified: boolean;
+
+  @Column({ nullable: true })
+  emailVerificationToken: string;
+
+  @Column({ nullable: true })
+  emailVerificationExpires: Date;
+
   @ManyToMany(() => Role, (role) => role.users)
   roles: Role[];
 
@@ -24,4 +40,3 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 }
-

@@ -8,11 +8,13 @@ import { Role } from '../database/entities/role.entity';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { RolesGuard } from './roles.guard';
+import { EmailModule } from '../email/email.module';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Role]),
+    EmailModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'development_secret_change_me',
       signOptions: { expiresIn: '15m' },
