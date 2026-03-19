@@ -61,12 +61,15 @@ export function Kitchen() {
       setTimeout(() => setNewOrderFlash(null), 3000);
     };
     const onUpdated = () => refetch();
+    const onDeleted = () => refetch();
 
     socket.on("order.created", onCreated);
     socket.on("order.statusUpdated", onUpdated);
+    socket.on("order.deleted", onDeleted);
     return () => {
       socket.off("order.created", onCreated);
       socket.off("order.statusUpdated", onUpdated);
+      socket.off("order.deleted", onDeleted);
     };
   }, [refetch]);
 

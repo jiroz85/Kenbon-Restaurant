@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
+import { useAuth } from "../hooks/useAuth";
+import { getSocket } from "../lib/socket";
 import "../styles/WaiterDashboard.css";
 
 type Order = {
@@ -28,9 +30,13 @@ type Order = {
 
 export function WaiterDashboard() {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [paidOrderNotifications, setPaidOrderNotifications] = useState<
+    string[]
+  >([]);
 
-  // Fetch all orders
+  // Fetch all orders so waiters can see payment status
   const { data: orders = [], isLoading } = useQuery({
     queryKey: ["orders", "all"],
     queryFn: async () => {
@@ -57,10 +63,38 @@ export function WaiterDashboard() {
     },
   });
 
+  // WebSocket listener for paid orders
+  useEffect(() => {
+    const socket = getSocket();
+
+    socket.on("order.statusUpdated", (order: Order) => {
+      if (order.status === "PAID") {
+        // Show notification for newly paid order
+        setPaidOrderNotifications((prev) => [...prev, order.id]);
+
+        // Remove notification after 5 seconds
+        setTimeout(() => {
+          setPaidOrderNotifications((current) =>
+            current.filter((id) => id !== order.id),
+          );
+        }, 5000);
+
+        // Refresh the paid orders list
+        queryClient.invalidateQueries({ queryKey: ["orders", "all"] });
+      }
+    });
+
+    return () => {
+      socket.off("order.statusUpdated");
+    };
+  }, [queryClient]);
+
   const getStatusColor = (status: string) => {
     switch (status.toUpperCase()) {
-      case "NEW":
+      case "PENDING_PAYMENT":
         return "#f59e0b";
+      case "PAID":
+        return "#10b981";
       case "IN_KITCHEN":
         return "#3b82f6";
       case "READY":
@@ -69,8 +103,6 @@ export function WaiterDashboard() {
         return "#06b6d4";
       case "OUT_FOR_DELIVERY":
         return "#8b5cf6";
-      case "PAID":
-        return "#10b981";
       case "CANCELLED":
         return "#ef4444";
       default:
@@ -86,7 +118,11 @@ export function WaiterDashboard() {
     setSelectedOrder(order);
   };
 
-  const pendingOrders = orders.filter((order) => order.status === "NEW");
+  // Update filtering for new workflow - show both paid and unpaid orders
+  const unpaidOrders = orders.filter(
+    (order) => order.status === "PENDING_PAYMENT",
+  );
+  const paidOrders = orders.filter((order) => order.status === "PAID");
   const activeOrders = orders.filter((order) =>
     ["IN_KITCHEN", "READY", "SERVED", "OUT_FOR_DELIVERY"].includes(
       order.status,
@@ -107,29 +143,77 @@ export function WaiterDashboard() {
       <h1 className="page-title">Waiter Dashboard</h1>
       <p className="page-lead">Manage and track customer orders in real-time</p>
 
-      {/* New Orders Alert */}
-      {pendingOrders.length > 0 && (
-        <div className="new-orders-alert">
-          <span className="alert-icon">🔔</span>
-          <span>
-            {pendingOrders.length} new order
-            {pendingOrders.length > 1 ? "s" : ""} waiting for confirmation
-          </span>
+      {/* Unpaid Orders Alert */}
+      {unpaidOrders.length > 0 && (
+        <div
+          className="new-orders-alert"
+          style={{
+            background: "linear-gradient(135deg, #f59e0b, #d97706)",
+            borderLeft: "4px solid #b45309",
+          }}
+        >
+          <h3>💰 Orders Awaiting Payment</h3>
+          <p>
+            {unpaidOrders.length} order{unpaidOrders.length > 1 ? "s" : ""}{" "}
+            waiting for payment processing.
+          </p>
         </div>
       )}
+
+      {/* Paid Orders Alert */}
+      {paidOrderNotifications.length > 0 && (
+        <div className="new-orders-alert">
+          <h3>💰 New Paid Orders Ready for Preparation!</h3>
+          <p>
+            Orders #{paidOrderNotifications.join(", #")} have been paid and are
+            ready to start preparation.
+          </p>
+        </div>
+      )}
+
+      {/* Paid Orders Ready */}
+      {paidOrders.length > 0 && paidOrderNotifications.length === 0 && (
+        <div
+          className="new-orders-alert"
+          style={{
+            background: "linear-gradient(135deg, #10b981, #059669)",
+            borderLeft: "4px solid #047857",
+          }}
+        >
+          <h3>✅ Paid Orders Ready</h3>
+          <p>
+            {paidOrders.length} paid order{paidOrders.length > 1 ? "s" : ""}{" "}
+            ready to start preparation.
+          </p>
+        </div>
+      )}
+
+      {/* New Orders Alert */}
+      {unpaidOrders.length === 0 &&
+        paidOrders.length === 0 &&
+        activeOrders.length === 0 && (
+          <div
+            className="new-orders-alert"
+            style={{
+              background: "linear-gradient(135deg, #6b7280, #4b5563)",
+              borderLeft: "4px solid #374151",
+            }}
+          >
+            <h3>📋 No Orders</h3>
+            <p>No orders at the moment.</p>
+          </div>
+        )}
 
       <div className="waiter-dashboard-grid">
         {/* Orders List */}
         <div className="orders-section">
           <div className="section-header">
-            <h2>Active Orders</h2>
-            <span className="order-count">
-              {activeOrders.length + pendingOrders.length}
-            </span>
+            <h2>All Orders</h2>
+            <span className="order-count">{orders.length}</span>
           </div>
 
           <div className="orders-list">
-            {[...pendingOrders, ...activeOrders].map((order) => (
+            {orders.map((order) => (
               <div
                 key={order.id}
                 className={`order-card ${selectedOrder?.id === order.id ? "selected" : ""}`}
@@ -144,12 +228,33 @@ export function WaiterDashboard() {
                     {order.tableId && (
                       <span className="table-info">Table {order.tableId}</span>
                     )}
+                    {/* Payment Status Indicator */}
+                    {order.status === "PENDING_PAYMENT" && (
+                      <span className="payment-status unpaid">
+                        💰 Awaiting Payment
+                      </span>
+                    )}
+                    {order.status === "PAID" && (
+                      <span className="payment-status paid">✅ Paid</span>
+                    )}
                   </div>
                   <div
                     className="order-status"
                     style={{ backgroundColor: getStatusColor(order.status) }}
                   >
-                    {order.status}
+                    {order.status === "PENDING_PAYMENT"
+                      ? "Awaiting Payment"
+                      : order.status === "PAID"
+                        ? "Paid"
+                        : order.status === "IN_KITCHEN"
+                          ? "In Kitchen"
+                          : order.status === "READY"
+                            ? "Ready"
+                            : order.status === "SERVED"
+                              ? "Served"
+                              : order.status === "OUT_FOR_DELIVERY"
+                                ? "Out for Delivery"
+                                : order.status}
                   </div>
                 </div>
 
@@ -232,77 +337,57 @@ export function WaiterDashboard() {
               </div>
 
               <div className="order-actions">
-                {selectedOrder.status === "NEW" && (
-                  <>
-                    <button
-                      className="btn btn-success"
-                      onClick={() =>
-                        handleStatusUpdate(selectedOrder.id, "IN_KITCHEN")
-                      }
-                      disabled={updateOrderStatus.isPending}
-                    >
-                      Start Preparation
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() =>
-                        handleStatusUpdate(selectedOrder.id, "CANCELLED")
-                      }
-                      disabled={updateOrderStatus.isPending}
-                    >
-                      Cancel Order
-                    </button>
-                  </>
-                )}
-
-                {selectedOrder.status === "IN_KITCHEN" && (
-                  <button
-                    className="btn btn-success"
-                    onClick={() =>
-                      handleStatusUpdate(selectedOrder.id, "READY")
-                    }
-                    disabled={updateOrderStatus.isPending}
-                  >
-                    Mark as Ready
-                  </button>
-                )}
-
-                {selectedOrder.status === "READY" && (
-                  <>
-                    {selectedOrder.type === "DELIVERY" ? (
+                {/* Only waiters can start preparation from PAID orders */}
+                {selectedOrder.status === "PAID" &&
+                  user?.roles?.includes("WAITER") && (
+                    <>
                       <button
-                        className="btn btn-primary"
+                        className="btn btn-success"
                         onClick={() =>
-                          handleStatusUpdate(
-                            selectedOrder.id,
-                            "OUT_FOR_DELIVERY",
-                          )
+                          handleStatusUpdate(selectedOrder.id, "IN_KITCHEN")
                         }
                         disabled={updateOrderStatus.isPending}
                       >
-                        Out for Delivery
+                        Start Preparation
                       </button>
-                    ) : (
                       <button
-                        className="btn btn-primary"
+                        className="btn btn-secondary"
+                        onClick={() => setSelectedOrder(null)}
+                      >
+                        Close
+                      </button>
+                    </>
+                  )}
+
+                {/* Only kitchen can mark as ready from IN_KITCHEN orders */}
+                {selectedOrder.status === "IN_KITCHEN" &&
+                  user?.roles?.includes("KITCHEN") && (
+                    <>
+                      <button
+                        className="btn btn-success"
                         onClick={() =>
-                          handleStatusUpdate(selectedOrder.id, "SERVED")
+                          handleStatusUpdate(selectedOrder.id, "READY")
                         }
                         disabled={updateOrderStatus.isPending}
                       >
-                        Mark as Served
+                        Mark as Ready
                       </button>
-                    )}
-                  </>
-                )}
+                      <button
+                        className="btn btn-secondary"
+                        onClick={() => setSelectedOrder(null)}
+                      >
+                        Close
+                      </button>
+                    </>
+                  )}
 
-                {selectedOrder.status === "OUT_FOR_DELIVERY" && (
+                {/* No actions for other statuses - just close button */}
+                {!["PAID", "IN_KITCHEN"].includes(selectedOrder.status) && (
                   <button
-                    className="btn btn-success"
-                    onClick={() => handleStatusUpdate(selectedOrder.id, "PAID")}
-                    disabled={updateOrderStatus.isPending}
+                    className="btn btn-secondary"
+                    onClick={() => setSelectedOrder(null)}
                   >
-                    Mark as Delivered & Paid
+                    Close
                   </button>
                 )}
               </div>

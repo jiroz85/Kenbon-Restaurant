@@ -27,4 +27,15 @@ export class RealtimeGateway {
     const result = this.server.emit('order.statusUpdated', order);
     console.log('RealtimeGateway: Emit result:', result);
   }
+
+  emitOrderDeleted(orderId: string) {
+    console.log('RealtimeGateway: Emitting order.deleted event:', {
+      orderId,
+      connectedClients: this.server.engine.clientsCount,
+    });
+
+    // Emit to all clients
+    const result = this.server.emit('order.deleted', { orderId });
+    console.log('RealtimeGateway: Emit result:', result);
+  }
 }

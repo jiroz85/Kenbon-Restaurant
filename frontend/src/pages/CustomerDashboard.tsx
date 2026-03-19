@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { api } from "../lib/api";
@@ -46,6 +46,7 @@ type CustomerOrder = {
 export function CustomerDashboard() {
   const authContext = useContext(AuthContext);
   const user = authContext?.user;
+  const queryClient = useQueryClient();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [notes, setNotes] = useState("");
   const [orderType, setOrderType] = useState<
@@ -87,6 +88,12 @@ export function CustomerDashboard() {
 
         // Create specific messages for different statuses
         switch (order.status) {
+          case "PENDING_PAYMENT":
+            message = `💰 Order #${order.id} is awaiting payment. Please proceed to checkout.`;
+            break;
+          case "PAID":
+            message = `✅ Order #${order.id} has been paid! Preparation will begin soon.`;
+            break;
           case "IN_KITCHEN":
             message = `🍳 Order #${order.id} is now being prepared!`;
             break;
@@ -96,11 +103,11 @@ export function CustomerDashboard() {
           case "OUT_FOR_DELIVERY":
             message = `🚚 Order #${order.id} is now out for delivery to your home!`;
             break;
+          case "DELIVERED":
+            message = `🎉 Order #${order.id} has been successfully delivered! Thank you for your order!`;
+            break;
           case "SERVED":
             message = `🎉 Order #${order.id} has been delivered!`;
-            break;
-          case "PAID":
-            message = `🎊 Order #${order.id} has been successfully delivered! Thank you for your order!`;
             break;
           case "CANCELLED":
             message = `❌ Order #${order.id} has been cancelled`;
@@ -115,10 +122,20 @@ export function CustomerDashboard() {
         let notificationClass = "";
         console.log("Customer Dashboard: Order status:", order.status);
 
-        if (order.status === "OUT_FOR_DELIVERY") {
+        if (order.status === "PENDING_PAYMENT") {
+          notificationClass = "notification-pending";
+          console.log(
+            "Customer Dashboard: Setting pending payment notification class",
+          );
+        } else if (order.status === "OUT_FOR_DELIVERY") {
           notificationClass = "notification-delivery";
           console.log(
             "Customer Dashboard: Setting delivery notification class",
+          );
+        } else if (order.status === "DELIVERED") {
+          notificationClass = "notification-delivered";
+          console.log(
+            "Customer Dashboard: Setting delivered notification class",
           );
         } else if (order.status === "IN_KITCHEN") {
           notificationClass = "notification-kitchen";
@@ -200,6 +217,25 @@ export function CustomerDashboard() {
       return data;
     },
     enabled: !!user?.id,
+  });
+
+  // Mutation for customer to confirm order received
+  const updateOrderStatusMutation = useMutation({
+    mutationFn: async ({
+      orderId,
+      status,
+    }: {
+      orderId: string;
+      status: string;
+    }) => {
+      await api.patch(`/orders/${orderId}/status`, { status });
+    },
+    onSuccess: () => {
+      // Refresh customer orders
+      queryClient.invalidateQueries({
+        queryKey: ["orders", "customer", user?.id],
+      });
+    },
   });
 
   const itemsByCategory = menuItems.reduce(
@@ -364,6 +400,24 @@ export function CustomerDashboard() {
                     {new Date(order.createdAt).toLocaleDateString()}
                   </p>
                 </div>
+                {/* Show "I Received My Order" button for delivery orders */}
+                {order.status === "OUT_FOR_DELIVERY" && (
+                  <button
+                    className="btn btn-success"
+                    style={{ marginTop: "1rem", width: "100%" }}
+                    onClick={() =>
+                      updateOrderStatusMutation.mutate({
+                        orderId: order.id,
+                        status: "DELIVERED",
+                      })
+                    }
+                    disabled={updateOrderStatusMutation.isPending}
+                  >
+                    {updateOrderStatusMutation.isPending
+                      ? "Confirming..."
+                      : "✅ I Received My Order"}
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -566,10 +620,10 @@ export function CustomerDashboard() {
 function getStatusBadgeClass(status: string) {
   const baseClass = "status-badge";
   switch (status.toUpperCase()) {
-    case "PENDING":
+    case "PENDING_PAYMENT":
       return `${baseClass} status-pending`;
-    case "CONFIRMED":
-      return `${baseClass} status-confirmed`;
+    case "PAID":
+      return `${baseClass} status-paid`;
     case "PREPARING":
       return `${baseClass} status-preparing`;
     case "READY":

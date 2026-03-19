@@ -16,12 +16,13 @@ import { Payment } from './payment.entity';
 export type OrderType = 'DINE_IN' | 'TAKEAWAY' | 'DELIVERY';
 
 export type OrderStatus =
-  | 'NEW'
+  | 'PENDING_PAYMENT'
+  | 'PAID'
   | 'IN_KITCHEN'
   | 'READY'
   | 'SERVED'
   | 'OUT_FOR_DELIVERY'
-  | 'PAID'
+  | 'DELIVERED'
   | 'CANCELLED';
 
 @Entity('orders')
@@ -32,7 +33,7 @@ export class Order {
   @Column({ type: 'varchar' })
   type: OrderType;
 
-  @Column({ type: 'varchar', default: 'NEW' })
+  @Column({ type: 'varchar', default: 'PENDING_PAYMENT' })
   status: OrderStatus;
 
   @ManyToOne(() => Table, (table) => table.orders, { nullable: true })
@@ -77,4 +78,3 @@ export class Order {
   @UpdateDateColumn()
   updatedAt: Date;
 }
-

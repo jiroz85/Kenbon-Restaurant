@@ -22,6 +22,11 @@ const NAV_ITEMS: { to: string; label: string; roles: string[] }[] = [
     roles: ["ADMIN", "MANAGER", "WAITER", "KITCHEN", "CASHIER"],
   },
   {
+    to: "/dashboard/admin-orders",
+    label: "Admin Orders",
+    roles: ["ADMIN", "MANAGER"],
+  },
+  {
     to: "/dashboard/menu",
     label: "Menu",
     roles: ["ADMIN", "MANAGER", "WAITER", "KITCHEN", "CASHIER", "CUSTOMER"],

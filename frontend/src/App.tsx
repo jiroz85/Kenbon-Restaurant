@@ -18,6 +18,7 @@ import { Delivery } from "./pages/Delivery";
 import { Inventory } from "./pages/Inventory";
 import { Users } from "./pages/Users";
 import { Settings } from "./pages/Settings";
+import { AdminOrders } from "./pages/AdminOrders";
 import "./App.css";
 
 function App() {
@@ -42,6 +43,14 @@ function App() {
             <Route path="dashboard" element={<RoleBasedDashboard />} />
             <Route path="orders" element={<Orders />} />
             <Route path="orders/:id" element={<OrderDetail />} />
+            <Route
+              path="admin-orders"
+              element={
+                <RoleGuard allowedRoles={["ADMIN", "MANAGER"]}>
+                  <AdminOrders />
+                </RoleGuard>
+              }
+            />
             <Route path="menu" element={<Menu />} />
             <Route path="menu/table" element={<MenuWithTable />} />
             <Route

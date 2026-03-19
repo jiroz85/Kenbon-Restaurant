@@ -42,10 +42,7 @@ export class OrdersService {
     }
 
     let table: Table | undefined;
-    if (dto.type === 'DINE_IN') {
-      if (!dto.tableId) {
-        throw new BadRequestException('tableId is required for DINE_IN orders');
-      }
+    if (dto.type === 'DINE_IN' && dto.tableId) {
       table =
         (await this.tablesRepository.findOne({ where: { id: dto.tableId } })) ??
         undefined;
@@ -144,10 +141,11 @@ export class OrdersService {
     });
   }
 
-  async updateStatus(id: string, dto: UpdateOrderStatusDto) {
+  async updateStatus(id: string, dto: UpdateOrderStatusDto, user?: any) {
     console.log('OrdersService: Updating order status:', {
       id,
       status: dto.status,
+      userRole: user?.roles?.[0],
     });
 
     const order = await this.ordersRepository.findOne({
@@ -165,6 +163,23 @@ export class OrdersService {
       createdBy: order.createdBy?.id,
     });
 
+    // Validation for customers: can only update their own orders to DELIVERED
+    if (user?.roles?.includes('CUSTOMER')) {
+      if (order.createdBy?.id !== user.id) {
+        throw new BadRequestException('You can only update your own orders');
+      }
+      if (dto.status !== 'DELIVERED') {
+        throw new BadRequestException(
+          'Customers can only mark orders as delivered',
+        );
+      }
+      if (order.status !== 'OUT_FOR_DELIVERY') {
+        throw new BadRequestException(
+          'Order must be out for delivery before marking as delivered',
+        );
+      }
+    }
+
     order.status = dto.status;
     const saved = await this.ordersRepository.save(order);
 
@@ -175,6 +190,34 @@ export class OrdersService {
     this.realtimeGateway.emitOrderStatusUpdated(saved);
 
     return saved;
+  }
+
+  async remove(id: string) {
+    console.log('OrdersService: Deleting order:', { id });
+
+    const order = await this.ordersRepository.findOne({
+      where: { id },
+      relations: ['items'],
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    // Delete order items first (due to foreign key constraint)
+    for (const item of order.items) {
+      await this.orderItemsRepository.remove(item);
+    }
+
+    // Delete the order
+    const deleted = await this.ordersRepository.remove(order);
+
+    console.log('OrdersService: Order deleted successfully:', { id });
+
+    // Emit WebSocket event for order deletion
+    this.realtimeGateway.emitOrderDeleted(id);
+
+    return { message: 'Order deleted successfully', orderId: id };
   }
 
   async getStats() {

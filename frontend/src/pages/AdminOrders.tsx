@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
-import { useAuth } from "../hooks/useAuth";
 import type { OrderStatus } from "../constants/orderStatus";
 import { getStatusBadgeClass } from "../constants/orderStatus";
 import "./Orders.css";
@@ -71,7 +70,7 @@ async function deleteOrder(orderId: string) {
 
 const statusBadgeClass = getStatusBadgeClass;
 
-export function Orders() {
+export function AdminOrders() {
   const queryClient = useQueryClient();
   const [showCreate, setShowCreate] = useState(false);
   const [formType, setFormType] = useState<OrderType>("DINE_IN");
@@ -83,7 +82,6 @@ export function Orders() {
     { menuItemId: string; quantity: number }[]
   >([]);
   const [formError, setFormError] = useState<string | null>(null);
-  const { user } = useAuth();
 
   const { data: orders, isLoading } = useQuery({
     queryKey: ["orders"],
@@ -123,6 +121,17 @@ export function Orders() {
     mutationFn: ({ id, status }: { id: string; status: OrderStatus }) =>
       updateOrderStatus(id, status),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["orders"] }),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteOrder,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      alert("Order deleted successfully");
+    },
+    onError: (error) => {
+      alert(`Failed to delete order: ${error.message}`);
+    },
   });
 
   const addItem = () => {
@@ -169,44 +178,35 @@ export function Orders() {
   };
 
   const statusFlow: OrderStatus[] = [
-    "PENDING_PAYMENT",
-    "PAID",
+    "NEW",
     "IN_KITCHEN",
     "READY",
     "SERVED",
+    "PAID",
   ];
   const canProgress = (order: Order) => {
     const i = statusFlow.indexOf(order.status);
-    const nextStat = nextStatus(order);
-
-    // Only cashiers can process payments (PENDING_PAYMENT → PAID)
-    if (order.status === "PENDING_PAYMENT" && nextStat === "PAID") {
-      return user?.roles?.includes("CASHIER");
-    }
-
-    // Only waiters can start preparation (PAID → IN_KITCHEN)
-    if (order.status === "PAID" && nextStat === "IN_KITCHEN") {
-      return user?.roles?.includes("WAITER");
-    }
-
-    // Only kitchen can mark as ready (IN_KITCHEN → READY)
-    if (order.status === "IN_KITCHEN" && nextStat === "READY") {
-      return user?.roles?.includes("KITCHEN");
-    }
-
-    return false; // No other transitions allowed
+    return i >= 0 && i < statusFlow.length - 1 && order.status !== "CANCELLED";
   };
   const canCancel = (order: Order) =>
-    order.status === "PENDING_PAYMENT" &&
+    order.status !== "PAID" &&
     order.status !== "CANCELLED" &&
-    order.status !== "OUT_FOR_DELIVERY" &&
-    !user?.roles?.includes("CASHIER") &&
-    !user?.roles?.includes("KITCHEN");
+    order.status !== "OUT_FOR_DELIVERY";
   const nextStatus = (order: Order) => {
     const i = statusFlow.indexOf(order.status);
     return i >= 0 && i < statusFlow.length - 1
       ? statusFlow[i + 1]
       : order.status;
+  };
+
+  const handleDelete = (orderId: string) => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this order? This action cannot be undone and will remove the order from all dashboards.",
+      )
+    ) {
+      deleteMutation.mutate(orderId);
+    }
   };
 
   return (
@@ -221,8 +221,8 @@ export function Orders() {
         }}
       >
         <div>
-          <h1 className="page-title">Orders</h1>
-          <p className="page-lead">View and manage orders</p>
+          <h1 className="page-title">Admin Orders</h1>
+          <p className="page-lead">Manage and delete orders (Admin only)</p>
         </div>
         <button className="btn btn-primary" onClick={() => setShowCreate(true)}>
           + New Order
@@ -403,7 +403,7 @@ export function Orders() {
                 <tr key={o.id}>
                   <td>
                     <Link
-                      to={`/dashboard/orders/${o.id}`}
+                      to={`/orders/${o.id}`}
                       style={{ color: "#38bdf8", textDecoration: "underline" }}
                     >
                       {o.id.slice(0, 8)}
@@ -459,6 +459,14 @@ export function Orders() {
                           Cancel
                         </button>
                       )}
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDelete(o.id)}
+                        disabled={deleteMutation.isPending}
+                        title="Delete order permanently from all dashboards"
+                      >
+                        🗑️ Delete
+                      </button>
                     </div>
                   </td>
                 </tr>

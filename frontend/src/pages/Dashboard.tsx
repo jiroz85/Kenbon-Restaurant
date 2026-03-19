@@ -1,6 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import React, { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { getStatusBadgeClass } from "../constants/orderStatus";
+import { getSocket } from "../lib/socket";
 import "./Dashboard.css";
 
 type Stats = {
@@ -17,11 +19,29 @@ async function fetchStats(): Promise<Stats> {
 }
 
 export function Dashboard() {
+  const queryClient = useQueryClient();
   const {
     data: stats,
     isLoading,
     error,
+    refetch,
   } = useQuery({ queryKey: ["orders", "stats"], queryFn: fetchStats });
+
+  // Listen for order deletion events to refresh stats
+  useEffect(() => {
+    const socket = getSocket();
+
+    const onOrderDeleted = () => {
+      console.log("Dashboard: Order deleted, refreshing stats");
+      refetch();
+    };
+
+    socket.on("order.deleted", onOrderDeleted);
+
+    return () => {
+      socket.off("order.deleted", onOrderDeleted);
+    };
+  }, [refetch]);
 
   if (isLoading) {
     return (

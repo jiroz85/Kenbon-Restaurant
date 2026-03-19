@@ -26,11 +26,14 @@ type Order = {
 };
 
 async function fetchDeliveryOrders(): Promise<Order[]> {
-  const { data } = await api.get<Order[]>("/orders/status/READY");
-  const outForDelivery = await api.get<Order[]>(
+  const { data: ready } = await api.get<Order[]>("/orders/status/READY");
+  const { data: outForDelivery } = await api.get<Order[]>(
     "/orders/status/OUT_FOR_DELIVERY",
   );
-  return [...(data || []), ...(outForDelivery.data || [])];
+  const { data: delivered } = await api.get<Order[]>(
+    "/orders/status/DELIVERED",
+  );
+  return [...(ready || []), ...(outForDelivery || []), ...(delivered || [])];
 }
 
 async function updateOrderStatus(orderId: string, status: OrderStatus) {
@@ -70,12 +73,13 @@ export function Delivery() {
   const markOutForDelivery = (id: string) =>
     statusMutation.mutate({ id, status: "OUT_FOR_DELIVERY" });
   const markDelivered = (id: string) =>
-    statusMutation.mutate({ id, status: "PAID" });
+    statusMutation.mutate({ id, status: "DELIVERED" });
 
   const readyOrders = orders.filter((o) => o.status === "READY");
   const outForDeliveryOrders = orders.filter(
     (o) => o.status === "OUT_FOR_DELIVERY",
   );
+  const deliveredOrders = orders.filter((o) => o.status === "DELIVERED");
 
   const sorted = [...orders].sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
@@ -105,6 +109,10 @@ export function Delivery() {
           <span className="dashboard-card-value">
             {outForDeliveryOrders.length}
           </span>
+        </div>
+        <div className="dashboard-card">
+          <span className="dashboard-card-label">Delivered</span>
+          <span className="dashboard-card-value">{deliveredOrders.length}</span>
         </div>
       </div>
 
@@ -191,13 +199,12 @@ export function Delivery() {
                 </button>
               )}
               {order.status === "OUT_FOR_DELIVERY" && (
-                <button
-                  className="btn btn-success btn-sm"
-                  onClick={() => markDelivered(order.id)}
-                  disabled={statusMutation.isPending}
+                <span
+                  className="badge badge-warning"
+                  style={{ fontSize: "0.75rem" }}
                 >
-                  Mark Delivered
-                </button>
+                  Awaiting Customer Confirmation
+                </span>
               )}
             </div>
           </div>

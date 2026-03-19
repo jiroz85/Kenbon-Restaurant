@@ -2,7 +2,15 @@ import { IsEnum } from 'class-validator';
 import type { OrderStatus } from '../../database/entities/order.entity';
 
 export class UpdateOrderStatusDto {
-  @IsEnum(['NEW', 'IN_KITCHEN', 'READY', 'SERVED', 'OUT_FOR_DELIVERY', 'PAID', 'CANCELLED'])
+  @IsEnum([
+    'PENDING_PAYMENT',
+    'PAID',
+    'IN_KITCHEN',
+    'READY',
+    'SERVED',
+    'OUT_FOR_DELIVERY',
+    'DELIVERED',
+    'CANCELLED',
+  ])
   status: OrderStatus;
 }
-

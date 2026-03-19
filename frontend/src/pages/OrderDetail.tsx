@@ -1,10 +1,7 @@
-import { useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
-import type { OrderStatus } from "../constants/orderStatus";
 import { getStatusBadgeClass } from "../constants/orderStatus";
-import { useAuth } from "../hooks/useAuth";
 import "./OrderDetail.css";
 
 type OrderItem = {
@@ -25,6 +22,8 @@ type Order = {
   grandTotal: string;
   createdAt: string;
   customerName?: string;
+  customerPhone?: string;
+  deliveryAddress?: string;
   payment?: Payment[];
 };
 
@@ -32,42 +31,9 @@ async function fetchOrder(id: string): Promise<Order> {
   const { data } = await api.get<Order>(`/orders/${id}`);
   return data;
 }
-async function fetchPayments(orderId: string) {
-  const { data } = await api.get<Payment[]>(`/payments/order/${orderId}`);
-  return data;
-}
-async function createPayment(orderId: string, provider: string) {
-  const { data } = await api.post<{ paymentId: string }>("/payments", {
-    orderId,
-    provider,
-  });
-  return data;
-}
-async function confirmPayment(paymentId: string) {
-  const { data } = await api.patch("/payments/status", {
-    paymentId,
-    status: "SUCCESS",
-  });
-  return data;
-}
-async function updateOrderStatus(orderId: string, status: OrderStatus) {
-  const { data } = await api.patch<Order>(`/orders/${orderId}/status`, {
-    status,
-  });
-  return data;
-}
-
-const statusBadgeClass = getStatusBadgeClass;
-
-const canManagePayment = (roles: string[] | undefined) =>
-  roles?.some((r) => r === "ADMIN" || r === "MANAGER" || r === "CASHIER") ??
-  false;
 
 export function OrderDetail() {
   const { id } = useParams<{ id: string }>();
-  const queryClient = useQueryClient();
-  const { user } = useAuth();
-  const [paymentProvider, setPaymentProvider] = useState("CASH");
 
   const {
     data: order,
@@ -77,31 +43,6 @@ export function OrderDetail() {
     queryKey: ["orders", id],
     queryFn: () => fetchOrder(id!),
     enabled: !!id,
-  });
-  const { data: payments = [] } = useQuery({
-    queryKey: ["payments", id],
-    queryFn: () => fetchPayments(id!),
-    enabled: !!id,
-  });
-
-  const createPaymentMutation = useMutation({
-    mutationFn: () => createPayment(id!, paymentProvider),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders", id] });
-      queryClient.invalidateQueries({ queryKey: ["payments", id] });
-    },
-  });
-  const confirmPaymentMutation = useMutation({
-    mutationFn: confirmPayment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders", id] });
-      queryClient.invalidateQueries({ queryKey: ["payments", id] });
-    },
-  });
-  const statusMutation = useMutation({
-    mutationFn: (status: OrderStatus) => updateOrderStatus(id!, status),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["orders", id] }),
   });
 
   if (!id) {
@@ -121,7 +62,7 @@ export function OrderDetail() {
           Order not found
         </p>
         <Link
-          to="/orders"
+          to="/dashboard/orders"
           className="btn btn-secondary"
           style={{ marginTop: "1rem", display: "inline-block" }}
         >
@@ -130,20 +71,6 @@ export function OrderDetail() {
       </div>
     );
   }
-
-  const statusFlow: OrderStatus[] = [
-    "NEW",
-    "IN_KITCHEN",
-    "READY",
-    "SERVED",
-    "PAID",
-  ];
-  const canProgress = order.status !== "PAID" && order.status !== "CANCELLED";
-  const canCancel =
-    order.status !== "PAID" &&
-    order.status !== "CANCELLED" &&
-    order.status !== "OUT_FOR_DELIVERY";
-  const nextStatus = statusFlow[statusFlow.indexOf(order.status) + 1];
 
   return (
     <div className="page">
@@ -158,7 +85,7 @@ export function OrderDetail() {
       >
         <div>
           <Link
-            to="/orders"
+            to="/dashboard/orders"
             style={{
               color: "#94a3b8",
               fontSize: "0.9rem",
@@ -175,12 +102,61 @@ export function OrderDetail() {
           </p>
         </div>
         <span
-          className={statusBadgeClass(order.status)}
+          className={getStatusBadgeClass(order.status)}
           style={{ fontSize: "1rem" }}
         >
           {order.status}
         </span>
       </div>
+
+      {/* Customer Information Section */}
+      {(order.customerName || order.customerPhone || order.deliveryAddress) && (
+        <div
+          className="card"
+          style={{
+            marginTop: "1.5rem",
+            background: "rgba(30, 41, 59, 0.6)",
+            border: "1px solid rgba(148, 163, 184, 0.2)",
+          }}
+        >
+          <h2 style={{ color: "#e2e8f0", marginTop: 0 }}>
+            Customer Information
+          </h2>
+          <div style={{ display: "grid", gap: "0.75rem" }}>
+            {order.customerName && (
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#94a3b8" }}>Name:</span>
+                <span style={{ color: "#e2e8f0", fontWeight: 500 }}>
+                  {order.customerName}
+                </span>
+              </div>
+            )}
+            {order.customerPhone && (
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#94a3b8" }}>Phone:</span>
+                <span style={{ color: "#e2e8f0", fontWeight: 500 }}>
+                  {order.customerPhone}
+                </span>
+              </div>
+            )}
+            {order.deliveryAddress && (
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#94a3b8" }}>Delivery Address:</span>
+                <span
+                  style={{
+                    color: "#e2e8f0",
+                    fontWeight: 500,
+                    textAlign: "right",
+                    maxWidth: "60%",
+                  }}
+                >
+                  {order.deliveryAddress}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div
         className="card"
@@ -234,108 +210,6 @@ export function OrderDetail() {
           </div>
         </div>
       </div>
-
-      {(canProgress || canCancel) && (
-        <div
-          style={{
-            marginTop: "1rem",
-            display: "flex",
-            gap: "0.75rem",
-            flexWrap: "wrap",
-          }}
-        >
-          {canProgress && nextStatus && (
-            <button
-              className="btn btn-primary"
-              onClick={() => statusMutation.mutate(nextStatus)}
-              disabled={statusMutation.isPending}
-            >
-              Mark as {nextStatus}
-            </button>
-          )}
-          {canCancel && (
-            <button
-              className="btn btn-danger"
-              onClick={() => statusMutation.mutate("CANCELLED")}
-              disabled={statusMutation.isPending}
-            >
-              Cancel Order
-            </button>
-          )}
-        </div>
-      )}
-
-      {canManagePayment(user?.roles) && order.status !== "PAID" && (
-        <div
-          className="card"
-          style={{
-            marginTop: "1.5rem",
-            background: "rgba(30, 41, 59, 0.6)",
-            border: "1px solid rgba(148, 163, 184, 0.2)",
-          }}
-        >
-          <h2 style={{ color: "#e2e8f0", marginTop: 0 }}>Payment</h2>
-          {payments.length > 0 ? (
-            <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-              {payments.map((p) => (
-                <li
-                  key={p.id}
-                  style={{
-                    padding: "0.5rem 0",
-                    color: "#e2e8f0",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "1rem",
-                  }}
-                >
-                  <span>
-                    {p.provider} – ${p.amount} – {p.status}
-                  </span>
-                  {p.status === "PENDING" && (
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={() => confirmPaymentMutation.mutate(p.id)}
-                      disabled={confirmPaymentMutation.isPending}
-                    >
-                      Confirm Paid
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                gap: "0.75rem",
-                alignItems: "center",
-                flexWrap: "wrap",
-              }}
-            >
-              <select
-                className="form-select"
-                value={paymentProvider}
-                onChange={(e) => setPaymentProvider(e.target.value)}
-                style={{ width: "auto" }}
-              >
-                <option value="CASH">Cash</option>
-                <option value="CARD_TERMINAL">Card Terminal</option>
-                <option value="STRIPE">Stripe</option>
-                <option value="PAYPAL">PayPal</option>
-              </select>
-              <button
-                className="btn btn-primary"
-                onClick={() => createPaymentMutation.mutate()}
-                disabled={createPaymentMutation.isPending}
-              >
-                {createPaymentMutation.isPending
-                  ? "Creating…"
-                  : "Create Payment"}
-              </button>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
