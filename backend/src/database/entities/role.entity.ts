@@ -21,11 +21,6 @@ export class Role {
   description?: string;
 
   @ManyToMany(() => User, (user) => user.roles)
-  @JoinTable({
-    name: 'user_roles',
-    joinColumn: { name: 'role_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'user_id', referencedColumnName: 'id' },
-  })
   users: User[];
 
   @CreateDateColumn()
@@ -34,4 +29,3 @@ export class Role {
   @UpdateDateColumn()
   updatedAt: Date;
 }
-

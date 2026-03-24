@@ -131,7 +131,7 @@ export function Login() {
         <h1 className="login-title">Kenbon Restaurant</h1>
         <p className="login-subtitle">Sign in to continue</p>
 
-        <form key="login-form" onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} className="login-form">
           <label className="login-label">
             Username or email
             <input

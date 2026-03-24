@@ -13,6 +13,8 @@ import { Role } from '../database/entities/role.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
+import { ResendVerificationDto } from './dto/resend-verification.dto';
+import { VerifyEmailDto } from './dto/verify-email.dto';
 import { EmailService } from '../email/email.service';
 
 @Injectable()
@@ -169,9 +171,9 @@ export class AuthService {
     };
   }
 
-  async verifyEmail(token: string): Promise<{ message: string }> {
+  async verifyEmail(dto: VerifyEmailDto): Promise<{ message: string }> {
     const user = await this.usersRepository.findOne({
-      where: { emailVerificationToken: token },
+      where: { emailVerificationToken: dto.token },
       relations: ['roles'],
     });
 
@@ -191,9 +193,11 @@ export class AuthService {
     return { message: 'Email verified successfully. You can now log in.' };
   }
 
-  async resendVerificationEmail(email: string): Promise<{ message: string }> {
+  async resendVerificationEmail(
+    dto: ResendVerificationDto,
+  ): Promise<{ message: string }> {
     const user = await this.usersRepository.findOne({
-      where: { email },
+      where: { email: dto.email },
       relations: ['roles'],
     });
 
@@ -210,6 +214,20 @@ export class AuthService {
       throw new BadRequestException(
         'Only customer accounts require email verification',
       );
+    }
+
+    // Simple rate limiting: check if a verification email was sent in the last 5 minutes
+    if (user.emailVerificationExpires && user.emailVerificationToken) {
+      const timeSinceLastEmail =
+        Date.now() -
+        user.emailVerificationExpires.getTime() +
+        24 * 60 * 60 * 1000;
+      if (timeSinceLastEmail < 5 * 60 * 1000) {
+        // 5 minutes
+        throw new BadRequestException(
+          'Please wait before requesting another verification email',
+        );
+      }
     }
 
     const token = await this.emailService.createVerificationToken(user);
