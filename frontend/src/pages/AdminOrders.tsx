@@ -178,7 +178,7 @@ export function AdminOrders() {
   };
 
   const statusFlow: OrderStatus[] = [
-    "NEW",
+    "PENDING_PAYMENT",
     "IN_KITCHEN",
     "READY",
     "SERVED",
@@ -403,7 +403,7 @@ export function AdminOrders() {
                 <tr key={o.id}>
                   <td>
                     <Link
-                      to={`/orders/${o.id}`}
+                      to={`/dashboard/orders/${o.id}`}
                       style={{ color: "#38bdf8", textDecoration: "underline" }}
                     >
                       {o.id.slice(0, 8)}
