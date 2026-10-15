@@ -25,15 +25,30 @@ type Category = {
   description?: string;
 };
 
+const heroSlides = [
+  {
+    image: "/images/hero/chef-cooking.jpg",
+    alt: "Master chef preparing gourmet food at Kenbon Restaurant",
+  },
+  {
+    image: "/images/hero/gourmet-dishes.jpg",
+    alt: "Delicious prime dishes and fine wine at Kenbon Restaurant",
+  },
+  {
+    image: "/images/hero/restaurant-ambiance.jpg",
+    alt: "Elegant dining room atmosphere at Kenbon Restaurant",
+  },
+];
+
 export function LandingPage() {
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
   const [specialIndex, setSpecialIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentTime, setCurrentTime] = useState(new Date());
   const [weather] = useState<"sunny" | "rainy" | "cloudy" | "cold">("sunny");
-  const [typedText, setTypedText] = useState("");
   const [reservationForm, setReservationForm] = useState({
     date: "",
     time: "",
@@ -41,19 +56,24 @@ export function LandingPage() {
     requests: "",
   });
 
+  // Preload and rotate hero background images every 5 seconds
+  useEffect(() => {
+    heroSlides.forEach((slide) => {
+      const img = new Image();
+      img.src = slide.image;
+    });
+
+    const timer = setInterval(() => {
+      setActiveHeroSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   // Debug: Check auth state changes
   useEffect(() => {
     console.log("LandingPage - Auth state:", { isAuthenticated, isLoading });
   }, [isAuthenticated, isLoading]);
-
-  // Generate particles once on mount to avoid Math.random in render
-  const [particles] = useState(() =>
-    [...Array(20)].map(() => ({
-      left: Math.random() * 100,
-      animationDelay: Math.random() * 5,
-      animationDuration: 15 + Math.random() * 10,
-    })),
-  );
 
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterToast, setNewsletterToast] = useState<string | null>(null);
@@ -68,27 +88,6 @@ export function LandingPage() {
       "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap";
     link.rel = "stylesheet";
     document.head.appendChild(link);
-  }, []);
-
-  useEffect(() => {
-    // Typewriter effect for "Kenbon Restaurant" - types completely, waits 5 seconds, then restarts
-    const fullText = "welcome to Kenbon Restaurant";
-    let currentIndex = 0;
-
-    const typingInterval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setTypedText(fullText.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        // Reset and start over after 1 second
-        setTimeout(() => {
-          currentIndex = 0;
-          setTypedText("");
-        }, 1000);
-      }
-    }, 200); // Typing speed
-
-    return () => clearInterval(typingInterval);
   }, []);
 
   useEffect(() => {
@@ -436,54 +435,36 @@ export function LandingPage() {
             </Link>
           </div>
         </header>
-        <div className="video-background">
-          <video
-            className="hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="https://images.unsplash.com/photo-1556911220-bff31c8ab6cd?w=1920&h=1080&fit=crop&auto=format"
-          >
-            <source
-              src="https://assets.mixkit.co/videos/preview/mixkit-chef-cooking-in-a-modern-kitchen-39879-large.mp4"
-              type="video/mp4"
+        <div className="hero-slideshow" aria-hidden="true">
+          {heroSlides.map((slide, index) => (
+            <div
+              key={slide.image}
+              className={`hero-slide ${index === activeHeroSlide ? "active" : ""}`}
+              style={{ backgroundImage: `url(${slide.image})` }}
+              role="img"
+              aria-label={slide.alt}
             />
-            <source
-              src="https://assets.mixkit.co/videos/preview/mixkit-professional-chef-cooking-in-a-restaurant-kitchen-39875-large.mp4"
-              type="video/mp4"
-            />
-            <source
-              src="https://assets.mixkit.co/videos/preview/mixkit-chef-flipping-steak-in-a-sizzling-pan-39876-large.mp4"
-              type="video/mp4"
-            />
-            <source
-              src="https://assets.mixkit.co/videos/preview/mixkit-seasoning-a-grilled-steak-on-flames-46661-large.mp4"
-              type="video/mp4"
-            />
-            <source
-              src="https://assets.mixkit.co/videos/preview/mixkit-flipping-a-flame-grilled-steak-22768-large.mp4"
-              type="video/mp4"
-            />
-          </video>
-          <div className="video-overlay" />
+          ))}
+          <div className="hero-overlay" />
         </div>
         <div className="hero-content">
           <div className="hero-text">
-            <h1 className="hero-title">{typedText}</h1>
+            <div className="hero-location-badge">Bule Hora, Ethiopia</div>
+            <h1 className="hero-title">Welcome to Kenbon Restaurant</h1>
             <p className="hero-subtitle">
               Where culinary artistry meets unforgettable dining experiences
             </p>
           </div>
           <div className="hero-actions">
             <Link to="/reservation" className="cta-primary">
-              Reserve Your Table
+              Reserve a Table
             </Link>
-            <Link to="/login" className="cta-secondary">
-              Order Online
-            </Link>
-            <button className="cta-tertiary" onClick={() => scrollToId("menu")}>
-              Discover Our Menu
+            <button
+              type="button"
+              className="cta-secondary"
+              onClick={() => scrollToId("menu")}
+            >
+              Explore Menu
             </button>
           </div>
           <div className="live-indicators">
@@ -500,19 +481,6 @@ export function LandingPage() {
               <span className="indicator-text">orders in progress</span>
             </div>
           </div>
-        </div>
-        <div className="floating-particles">
-          {particles.map((particle, i) => (
-            <div
-              key={i}
-              className="particle"
-              style={{
-                left: `${particle.left}%`,
-                animationDelay: `${particle.animationDelay}s`,
-                animationDuration: `${particle.animationDuration}s`,
-              }}
-            ></div>
-          ))}
         </div>
       </section>
 
