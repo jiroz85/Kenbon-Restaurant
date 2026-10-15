@@ -72,8 +72,6 @@ export function Delivery() {
 
   const markOutForDelivery = (id: string) =>
     statusMutation.mutate({ id, status: "OUT_FOR_DELIVERY" });
-  const markDelivered = (id: string) =>
-    statusMutation.mutate({ id, status: "DELIVERED" });
 
   const readyOrders = orders.filter((o) => o.status === "READY");
   const outForDeliveryOrders = orders.filter(
@@ -132,7 +130,7 @@ export function Delivery() {
                 marginBottom: "0.75rem",
               }}
             >
-              <span style={{ fontWeight: 600, color: "#f8fafc" }}>
+              <span style={{ fontWeight: 600, color: "var(--text-heading)" }}>
                 {order.type} • {order.id.slice(0, 8)}
               </span>
               <span className={statusBadgeClass(order.status)}>
@@ -142,22 +140,22 @@ export function Delivery() {
 
             {order.customerName && (
               <div style={{ marginBottom: "0.5rem" }}>
-                <strong style={{ color: "#e2e8f0" }}>Customer:</strong>{" "}
-                <span style={{ color: "#94a3b8" }}>{order.customerName}</span>
+                <strong style={{ color: "var(--text-primary)" }}>Customer:</strong>{" "}
+                <span style={{ color: "var(--text-muted)" }}>{order.customerName}</span>
               </div>
             )}
 
             {order.customerPhone && (
               <div style={{ marginBottom: "0.5rem" }}>
-                <strong style={{ color: "#e2e8f0" }}>Phone:</strong>{" "}
-                <span style={{ color: "#94a3b8" }}>{order.customerPhone}</span>
+                <strong style={{ color: "var(--text-primary)" }}>Phone:</strong>{" "}
+                <span style={{ color: "var(--text-muted)" }}>{order.customerPhone}</span>
               </div>
             )}
 
             {order.deliveryAddress && (
               <div style={{ marginBottom: "1rem" }}>
-                <strong style={{ color: "#e2e8f0" }}>Address:</strong>{" "}
-                <span style={{ color: "#94a3b8", fontSize: "0.9rem" }}>
+                <strong style={{ color: "var(--text-primary)" }}>Address:</strong>{" "}
+                <span style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
                   {order.deliveryAddress}
                 </span>
               </div>
@@ -167,7 +165,7 @@ export function Delivery() {
               style={{
                 marginBottom: "1rem",
                 fontSize: "0.9rem",
-                color: "#94a3b8",
+                color: "var(--text-secondary)",
               }}
             >
               {order.items
@@ -182,9 +180,9 @@ export function Delivery() {
                 marginBottom: "1rem",
               }}
             >
-              <span style={{ color: "#e2e8f0" }}>Total:</span>
-              <span style={{ color: "#86efac", fontWeight: 600 }}>
-                ${order.grandTotal}
+              <span style={{ color: "var(--text-primary)" }}>Total:</span>
+              <span style={{ color: "var(--price-color)", fontWeight: 600 }}>
+                ETB {order.grandTotal}
               </span>
             </div>
 
@@ -214,7 +212,7 @@ export function Delivery() {
       {sorted.length === 0 && (
         <p
           className="page-lead"
-          style={{ marginTop: "2rem", color: "#94a3b8", textAlign: "center" }}
+          style={{ marginTop: "2rem", color: "var(--text-muted)", textAlign: "center" }}
         >
           No delivery orders
         </p>

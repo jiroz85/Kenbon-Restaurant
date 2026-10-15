@@ -1,7 +1,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
-import { getStatusBadgeClass } from "../constants/orderStatus";
+import { getStatusBadgeClass, type OrderStatus } from "../constants/orderStatus";
 import "./OrderDetail.css";
 
 type OrderItem = {
@@ -87,7 +87,7 @@ export function OrderDetail() {
           <Link
             to="/dashboard/orders"
             style={{
-              color: "#94a3b8",
+              color: "var(--text-muted)",
               fontSize: "0.9rem",
               marginBottom: "0.5rem",
               display: "inline-block",
@@ -115,36 +115,36 @@ export function OrderDetail() {
           className="card"
           style={{
             marginTop: "1.5rem",
-            background: "rgba(30, 41, 59, 0.6)",
-            border: "1px solid rgba(148, 163, 184, 0.2)",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-color)",
           }}
         >
-          <h2 style={{ color: "#e2e8f0", marginTop: 0 }}>
+          <h2 style={{ color: "var(--text-heading)", marginTop: 0 }}>
             Customer Information
           </h2>
           <div style={{ display: "grid", gap: "0.75rem" }}>
             {order.customerName && (
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <span style={{ color: "#94a3b8" }}>Name:</span>
-                <span style={{ color: "#e2e8f0", fontWeight: 500 }}>
+                <span style={{ color: "var(--text-muted)" }}>Name:</span>
+                <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>
                   {order.customerName}
                 </span>
               </div>
             )}
             {order.customerPhone && (
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <span style={{ color: "#94a3b8" }}>Phone:</span>
-                <span style={{ color: "#e2e8f0", fontWeight: 500 }}>
+                <span style={{ color: "var(--text-muted)" }}>Phone:</span>
+                <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>
                   {order.customerPhone}
                 </span>
               </div>
             )}
             {order.deliveryAddress && (
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <span style={{ color: "#94a3b8" }}>Delivery Address:</span>
+                <span style={{ color: "var(--text-muted)" }}>Delivery Address:</span>
                 <span
                   style={{
-                    color: "#e2e8f0",
+                    color: "var(--text-primary)",
                     fontWeight: 500,
                     textAlign: "right",
                     maxWidth: "60%",
@@ -162,30 +162,30 @@ export function OrderDetail() {
         className="card"
         style={{
           marginTop: "1.5rem",
-          background: "rgba(30, 41, 59, 0.6)",
-          border: "1px solid rgba(148, 163, 184, 0.2)",
+          background: "var(--bg-card)",
+          border: "1px solid var(--border-color)",
         }}
       >
-        <h2 style={{ color: "#e2e8f0", marginTop: 0 }}>Items</h2>
+        <h2 style={{ color: "var(--text-heading)", marginTop: 0 }}>Items</h2>
         <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
           {order.items.map((i) => (
             <li
               key={i.id}
               style={{
                 padding: "0.5rem 0",
-                borderBottom: "1px solid rgba(148, 163, 184, 0.2)",
+                borderBottom: "1px solid var(--border-color)",
                 display: "flex",
                 justifyContent: "space-between",
               }}
             >
-              <span style={{ color: "#e2e8f0" }}>
+              <span style={{ color: "var(--text-primary)" }}>
                 {i.menuItem.name} ×{i.quantity}{" "}
                 {i.notes && (
-                  <span style={{ color: "#94a3b8" }}>({i.notes})</span>
+                  <span style={{ color: "var(--text-muted)" }}>({i.notes})</span>
                 )}
               </span>
-              <span style={{ color: "#86efac" }}>
-                ${(Number(i.unitPrice) * i.quantity).toFixed(2)}
+              <span style={{ color: "var(--price-color)" }}>
+                ETB {(Number(i.unitPrice) * i.quantity).toFixed(2)}
               </span>
             </li>
           ))}
@@ -194,7 +194,7 @@ export function OrderDetail() {
           style={{
             marginTop: "1rem",
             paddingTop: "1rem",
-            borderTop: "1px solid rgba(148, 163, 184, 0.2)",
+            borderTop: "1px solid var(--border-color)",
           }}
         >
           <div
@@ -202,11 +202,11 @@ export function OrderDetail() {
               display: "flex",
               justifyContent: "space-between",
               fontWeight: 600,
-              color: "#f8fafc",
+              color: "var(--text-heading)",
             }}
           >
             <span>Total</span>
-            <span style={{ color: "#86efac" }}>${order.grandTotal}</span>
+            <span style={{ color: "var(--price-color)" }}>ETB {order.grandTotal}</span>
           </div>
         </div>
       </div>

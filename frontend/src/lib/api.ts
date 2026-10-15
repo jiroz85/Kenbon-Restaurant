@@ -10,8 +10,6 @@ export const api = axios.create({
 export type OnUnauthorized = () => void;
 export type TryRefresh = () => Promise<boolean>;
 
-let onUnauthorizedCallback: OnUnauthorized | null = null;
-
 export function setAuthToken(token: string | null) {
   if (token) {
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;

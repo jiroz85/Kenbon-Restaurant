@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { ThemeToggle } from "../components/ThemeToggle";
 import "./VerifyEmail.css";
 
 export function VerifyEmail() {
@@ -79,6 +80,7 @@ export function VerifyEmail() {
 
   return (
     <div className="verify-email-page">
+      <ThemeToggle variant="floating" />
       <div className="verify-email-card">
         <div className="verify-email-header">
           <h1 className="verify-email-title">Email Verification</h1>

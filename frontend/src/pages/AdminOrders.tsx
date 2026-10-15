@@ -234,11 +234,11 @@ export function AdminOrders() {
           className="card"
           style={{
             marginTop: "1.5rem",
-            background: "rgba(30, 41, 59, 0.6)",
-            border: "1px solid rgba(148, 163, 184, 0.2)",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-color)",
           }}
         >
-          <h2 style={{ color: "#e2e8f0", marginTop: 0 }}>Create Order</h2>
+          <h2 style={{ color: "var(--text-heading)", marginTop: 0 }}>Create Order</h2>
           <div className="form-group">
             <label className="form-label">Order Type</label>
             <select
@@ -330,7 +330,7 @@ export function AdminOrders() {
                     ?.filter((m) => m.isAvailable)
                     .map((m) => (
                       <option key={m.id} value={m.id}>
-                        {m.name} – ${m.price}
+                        {m.name} – ETB {m.price}
                       </option>
                     ))}
                 </select>
@@ -416,7 +416,7 @@ export function AdminOrders() {
                       .map((i) => `${i.menuItem.name} ×${i.quantity}`)
                       .join(", ")}
                   </td>
-                  <td>${o.grandTotal}</td>
+                  <td>ETB {o.grandTotal}</td>
                   <td>
                     <span className={statusBadgeClass(o.status)}>
                       {o.status}

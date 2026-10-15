@@ -39,7 +39,7 @@ export class Order {
   @ManyToOne(() => Table, (table) => table.orders, { nullable: true })
   table?: Table;
 
-  @ManyToOne(() => User, { nullable: true })
+  @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
   createdBy?: User;
 
   @Column({ nullable: true })

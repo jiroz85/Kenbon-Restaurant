@@ -23,6 +23,7 @@ export type AuthResponse = {
   accessToken: string;
   refreshToken?: string;
   user: AuthUser;
+  message?: string;
 };
 
 export async function login(

@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
+import { ThemeToggle } from '../components/ThemeToggle';
 import './Reservation.css';
 
 export function Reservation() {
   return (
     <div className="reservation-page">
+      <ThemeToggle variant="floating" />
       <div className="container">
         <div className="reservation-header">
           <Link to="/" className="back-link">← Back to Home</Link>

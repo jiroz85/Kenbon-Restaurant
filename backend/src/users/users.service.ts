@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -88,10 +88,43 @@ export class UsersService {
   }
 
   async remove(id: string) {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['roles'],
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const hasAdminRole = user.roles?.some((r) => r.name === 'ADMIN');
+    if (hasAdminRole) {
+      const allAdmins = await this.usersRepository
+        .createQueryBuilder('user')
+        .innerJoin('user.roles', 'role', 'role.name = :roleName', { roleName: 'ADMIN' })
+        .getCount();
+
+      if (allAdmins <= 1) {
+        throw new BadRequestException('Cannot delete the sole administrator account');
+      }
+    }
+
+    // Set createdBy to NULL for any orders created by this user
+    await this.usersRepository.query(
+      'UPDATE orders SET "createdById" = NULL WHERE "createdById" = $1',
+      [id],
+    );
+
+    // Remove user_roles associations
+    await this.usersRepository.query(
+      'DELETE FROM user_roles WHERE user_id = $1',
+      [id],
+    );
+
     const result = await this.usersRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException('User not found');
     }
+    return { success: true };
   }
 
   private async resolveRoles(roleNames?: string[]): Promise<Role[]> {

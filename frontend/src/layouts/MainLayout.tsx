@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { ThemeToggle } from "../components/ThemeToggle";
 import "./MainLayout.css";
 
 const NAV_ITEMS: { to: string; label: string; roles: string[] }[] = [
@@ -82,14 +83,17 @@ export function MainLayout() {
           aria-hidden="true"
         />
       )}
-      <button
-        type="button"
-        className="mobile-menu-toggle"
-        onClick={toggleSidebar}
-        aria-label="Toggle menu"
-      >
-        ☰
-      </button>
+      <div className="mobile-header-actions">
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          onClick={toggleSidebar}
+          aria-label="Toggle menu"
+        >
+          ☰
+        </button>
+        <ThemeToggle variant="nav" className="mobile-theme-toggle" />
+      </div>
       <aside className={`main-layout-sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="main-layout-brand">
           <span className="main-layout-brand-text">Kenbon</span>
@@ -108,25 +112,33 @@ export function MainLayout() {
             </NavLink>
           ))}
         </nav>
-        <div className="main-layout-user">
-          <span className="main-layout-user-name" title={user?.email ?? ""}>
-            {user?.username ?? "User"}
-          </span>
-          {user?.roles?.length ? (
-            <span className="main-layout-user-roles">
-              {user.roles.join(", ")}
+        <div className="main-layout-sidebar-bottom">
+          <div className="main-layout-theme-toggle-wrap">
+            <ThemeToggle variant="sidebar" />
+          </div>
+          <div className="main-layout-user">
+            <span className="main-layout-user-name" title={user?.email ?? ""}>
+              {user?.username ?? "User"}
             </span>
-          ) : null}
-          <button
-            type="button"
-            className="main-layout-logout"
-            onClick={handleLogout}
-          >
-            Log out
-          </button>
+            {user?.roles?.length ? (
+              <span className="main-layout-user-roles">
+                {user.roles.join(", ")}
+              </span>
+            ) : null}
+            <button
+              type="button"
+              className="main-layout-logout"
+              onClick={handleLogout}
+            >
+              Log out
+            </button>
+          </div>
         </div>
       </aside>
       <main className="main-layout-content">
+        <div className="desktop-layout-header">
+          <ThemeToggle variant="nav" className="desktop-header-theme-toggle" />
+        </div>
         <Outlet />
       </main>
     </div>

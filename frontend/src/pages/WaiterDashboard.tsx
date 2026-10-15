@@ -262,7 +262,7 @@ export function WaiterDashboard() {
                   <span className="order-items">
                     {order.items.length} items
                   </span>
-                  <span className="order-total">${order.total}</span>
+                  <span className="order-total">ETB {order.total}</span>
                   <span className="order-time">
                     {new Date(order.createdAt).toLocaleTimeString()}
                   </span>
@@ -324,7 +324,7 @@ export function WaiterDashboard() {
                       <span className="item-name">{item.menuItem.name}</span>
                       <span className="item-quantity">×{item.quantity}</span>
                     </div>
-                    <span className="item-price">${item.menuItem.price}</span>
+                    <span className="item-price">ETB {item.menuItem.price}</span>
                     {item.notes && (
                       <div className="item-notes">Notes: {item.notes}</div>
                     )}
@@ -333,7 +333,7 @@ export function WaiterDashboard() {
               </div>
 
               <div className="order-total-section">
-                <strong>Total: ${selectedOrder.total}</strong>
+                <strong>Total: ETB {selectedOrder.total}</strong>
               </div>
 
               <div className="order-actions">

@@ -1,12 +1,6 @@
 /* Kenbon Restaurant Landing Page - Luxury Styling */
 
 :root {
-  --deep-charcoal: #1a1a1a;
-  --warm-gold: #d4af37;
-  --soft-cream: #faf8f3;
-  --light-gray: #f5f5f5;
-  --medium-gray: #888;
-  --dark-gray: #333;
   --white: #ffffff;
 }
 
@@ -19,8 +13,10 @@
     Roboto,
     sans-serif;
   line-height: 1.6;
-  color: var(--deep-charcoal);
+  color: var(--text-primary);
+  background: var(--bg-page);
   overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .newsletter-toast {
@@ -355,12 +351,13 @@
   background: none;
   border: none;
   padding: 0;
-  color: var(--soft-cream);
+  color: #f8fafc;
   font-size: 0.95rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   position: relative;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
 .hero-nav-link::after {
@@ -625,10 +622,11 @@
 
 /* Enhanced signature card hover effects */
 .signature-card {
-  background: var(--white);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-card);
   transition: all 0.4s ease;
   cursor: pointer;
 }
@@ -915,7 +913,8 @@ section.animate-in .signature-card:nth-child(6) {
 /* SECTION 2 - SIGNATURE COLLECTION */
 .signature-section {
   padding: 6rem 0;
-  background: var(--white);
+  background: var(--section-bg-primary);
+  transition: background 0.3s ease;
 }
 
 .section-title {
@@ -923,8 +922,9 @@ section.animate-in .signature-card:nth-child(6) {
   font-size: 3rem;
   text-align: center;
   margin-bottom: 4rem;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
   font-weight: 300;
+  transition: color 0.3s ease;
 }
 
 .signature-grid {
@@ -934,17 +934,18 @@ section.animate-in .signature-card:nth-child(6) {
 }
 
 .signature-card {
-  background: var(--white);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-card);
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .signature-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .dish-image {
@@ -957,7 +958,7 @@ section.animate-in .signature-card:nth-child(6) {
   .image-placeholder:not(.signature-image-0):not(.signature-image-1):not(
     .signature-image-2
   ):not(.signature-image-3):not(.signature-image-4):not(.signature-image-5) {
-  background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+  background: linear-gradient(135deg, #1e293b, #0f172a);
   transition: transform 0.3s ease;
 }
 
@@ -970,11 +971,11 @@ section.animate-in .signature-card:nth-child(6) {
   top: 1rem;
   right: 1rem;
   background: var(--warm-gold);
-  color: var(--white);
+  color: #0f172a;
+  font-weight: 600;
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-size: 0.8rem;
-  font-weight: 500;
 }
 
 .dish-info {
@@ -985,19 +986,21 @@ section.animate-in .signature-card:nth-child(6) {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
+  transition: color 0.3s ease;
 }
 
 .dish-description {
-  color: var(--medium-gray);
+  color: var(--text-secondary);
   margin-bottom: 1rem;
   font-size: 0.95rem;
+  transition: color 0.3s ease;
 }
 
 .dish-price {
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--warm-gold);
+  color: var(--price-color);
   margin-bottom: 1rem;
 }
 
@@ -1014,7 +1017,7 @@ section.animate-in .signature-card:nth-child(6) {
 .chef-notes,
 .pairing {
   font-size: 0.85rem;
-  color: var(--medium-gray);
+  color: var(--text-muted);
   margin-bottom: 0.5rem;
   font-style: italic;
 }
@@ -1022,7 +1025,8 @@ section.animate-in .signature-card:nth-child(6) {
 /* SECTION 3 - DYNAMIC SPECIALS THEATER */
 .specials-section {
   padding: 6rem 0;
-  background: var(--soft-cream);
+  background: var(--section-bg-alt);
+  transition: background 0.3s ease;
 }
 
 .specials-carousel {
@@ -1069,11 +1073,12 @@ section.animate-in .signature-card:nth-child(6) {
 
 .availability-badge {
   display: inline-block;
-  background: #ff4444;
-  color: var(--white);
+  background: #ef4444;
+  color: #ffffff;
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-size: 0.8rem;
+  font-weight: 600;
   margin-bottom: 1rem;
 }
 
@@ -1081,26 +1086,29 @@ section.animate-in .signature-card:nth-child(6) {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
+  transition: color 0.3s ease;
 }
 
 .special-description {
   font-size: 1.1rem;
   margin-bottom: 1rem;
-  color: var(--dark-gray);
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .special-story {
   font-style: italic;
-  color: var(--medium-gray);
+  color: var(--text-muted);
   margin-bottom: 1.5rem;
   font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
 .special-price {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--warm-gold);
+  color: var(--price-color);
 }
 
 .carousel-dots {
@@ -1126,7 +1134,8 @@ section.animate-in .signature-card:nth-child(6) {
 /* SECTION 4 - CULINARY JOURNEY */
 .journey-section {
   padding: 6rem 0;
-  background: var(--white);
+  background: var(--section-bg-primary);
+  transition: background 0.3s ease;
 }
 
 .journey-content {
@@ -1139,8 +1148,9 @@ section.animate-in .signature-card:nth-child(6) {
 .journey-description {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: var(--dark-gray);
+  color: var(--text-secondary);
   margin-bottom: 2rem;
+  transition: color 0.3s ease;
 }
 
 .chef-quote {
@@ -1164,17 +1174,19 @@ section.animate-in .signature-card:nth-child(6) {
 .visual-item {
   border-radius: 12px;
   overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.15);
 }
 
 .visual-item
   .image-placeholder:not(.kitchen):not(.chef):not(.dining):not(.ingredients) {
-  background: linear-gradient(45deg, #f5f5f5, #e0e0e0);
+  background: linear-gradient(135deg, #1e293b, #0f172a);
 }
 
 /* SECTION 5 - INTERACTIVE MENU EXPERIENCE */
 .menu-section {
   padding: 6rem 0;
-  background: var(--soft-cream);
+  background: var(--section-bg-alt);
+  transition: background 0.3s ease;
 }
 
 .menu-categories {
@@ -1187,19 +1199,22 @@ section.animate-in .signature-card:nth-child(6) {
 
 .category-btn {
   padding: 0.8rem 1.5rem;
-  border: 2px solid var(--warm-gold);
-  background: transparent;
-  color: var(--deep-charcoal);
+  border: 1px solid var(--border-accent);
+  background: var(--bg-card);
+  color: var(--text-primary);
   border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 500;
+  box-shadow: var(--shadow-sm);
 }
 
 .category-btn.active,
 .category-btn:hover {
   background: var(--warm-gold);
-  color: var(--white);
+  color: #0f172a;
+  border-color: var(--warm-gold);
+  font-weight: 600;
 }
 
 .menu-items {
@@ -1209,15 +1224,17 @@ section.animate-in .signature-card:nth-child(6) {
 }
 
 .menu-item {
-  background: var(--white);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .menu-item:hover {
   transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .menu-item-image {
@@ -1227,12 +1244,12 @@ section.animate-in .signature-card:nth-child(6) {
 
 .menu-item-image
   .image-placeholder:not(.menu-image-0):not(.menu-image-1):not(.menu-image-2) {
-  background: linear-gradient(135deg, #f0f0f0, #d0d0d0);
+  background: linear-gradient(135deg, #1e293b, #0f172a);
 }
 
 .menu-item-info {
   padding: 1.5rem;
-  background: #ffffff !important;
+  background: transparent !important;
   position: relative;
   z-index: 1;
 }
@@ -1241,32 +1258,34 @@ section.animate-in .signature-card:nth-child(6) {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
-  color: #1a1a1a !important;
+  color: var(--text-heading) !important;
   font-weight: 600;
+  transition: color 0.3s ease;
 }
 
 .menu-item-description {
-  color: #666666 !important;
+  color: var(--text-secondary) !important;
   margin-bottom: 1rem;
   font-size: 0.9rem;
   line-height: 1.4;
+  transition: color 0.3s ease;
 }
 
 .menu-item-price {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--warm-gold);
+  color: var(--price-color);
   margin-bottom: 1rem;
 }
 
 .menu-order-btn {
   display: inline-block;
   background: var(--warm-gold);
-  color: var(--deep-charcoal);
+  color: #0f172a;
   text-decoration: none;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.9rem;
   text-align: center;
   transition: all 0.3s ease;
@@ -1285,7 +1304,8 @@ section.animate-in .signature-card:nth-child(6) {
 /* SECTION 7 - ENTERTAINMENT EXPERIENCES */
 .entertainment-section {
   padding: 6rem 0;
-  background: linear-gradient(135deg, #faf8f3 0%, #f5f5f5 100%);
+  background: var(--section-bg-primary);
+  transition: background 0.3s ease;
 }
 
 .entertainment-grid {
@@ -1296,10 +1316,11 @@ section.animate-in .signature-card:nth-child(6) {
 }
 
 .entertainment-card {
-  background: var(--white);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-card);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   flex-direction: column;
@@ -1309,7 +1330,7 @@ section.animate-in .signature-card:nth-child(6) {
 
 .entertainment-card:hover {
   transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .entertainment-card:hover .entertainment-image .image-placeholder {
@@ -1375,7 +1396,7 @@ section.animate-in .signature-card:nth-child(6) {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 2rem;
   font-weight: 700;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
   margin-bottom: 1.5rem;
   position: relative;
   transition: color 0.3s ease;
@@ -1393,11 +1414,12 @@ section.animate-in .signature-card:nth-child(6) {
 }
 
 .entertainment-description {
-  color: #666666;
+  color: var(--text-secondary);
   font-size: 1.1rem;
   line-height: 1.7;
   margin-bottom: 2rem;
   flex: 1;
+  transition: color 0.3s ease;
 }
 
 .entertainment-features {
@@ -1499,7 +1521,8 @@ section.animate-in .signature-card:nth-child(6) {
 /* SECTION 8 - ELEGANT RESERVATION SUITE */
 .reservation-section {
   padding: 6rem 0;
-  background: var(--soft-cream);
+  background: var(--section-bg-alt);
+  transition: background 0.3s ease;
 }
 
 .reservation-form {
@@ -1522,7 +1545,7 @@ section.animate-in .signature-card:nth-child(6) {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: var(--deep-charcoal);
+  color: var(--text-secondary);
 }
 
 .form-group input,
@@ -1530,11 +1553,12 @@ section.animate-in .signature-card:nth-child(6) {
 .form-group textarea {
   width: 100%;
   padding: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color-strong);
   border-radius: 8px;
   font-size: 1rem;
-  background: var(--white);
-  transition: border-color 0.3s ease;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  transition: border-color 0.3s ease, background 0.3s ease;
 }
 
 .form-group input:focus,
@@ -1557,31 +1581,33 @@ section.animate-in .signature-card:nth-child(6) {
 }
 
 .option-card {
-  background: var(--white);
+  background: var(--bg-card);
   padding: 1.5rem;
   border-radius: 12px;
-  border: 2px solid transparent;
+  border: 2px solid var(--border-color);
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
 }
 
 .option-card:hover {
   border-color: var(--warm-gold);
+  box-shadow: var(--shadow-card);
 }
 
 .option-card h3 {
   margin-bottom: 0.5rem;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
 }
 
 .option-card p {
   margin-bottom: 1rem;
-  color: var(--medium-gray);
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
 .option-price {
-  color: var(--warm-gold);
+  color: var(--price-color);
   font-weight: 600;
 }
 
@@ -1589,11 +1615,11 @@ section.animate-in .signature-card:nth-child(6) {
   width: 100%;
   padding: 1.2rem;
   background: var(--warm-gold);
-  color: var(--white);
+  color: #0f172a;
   border: none;
   border-radius: 8px;
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-bottom: 1rem;
@@ -1605,14 +1631,15 @@ section.animate-in .signature-card:nth-child(6) {
 
 .best-available {
   text-align: center;
-  color: var(--medium-gray);
+  color: var(--text-muted);
   font-style: italic;
 }
 
 /* SECTION 9 - LOCATION & CONCIERGE */
 .location-section {
   padding: 6rem 0;
-  background: var(--white);
+  background: var(--section-bg-primary);
+  transition: background 0.3s ease;
 }
 
 .location-content {
@@ -1630,12 +1657,14 @@ section.animate-in .signature-card:nth-child(6) {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
+  transition: color 0.3s ease;
 }
 
 .info-block p {
-  color: var(--dark-gray);
+  color: var(--text-secondary);
   line-height: 1.6;
+  transition: color 0.3s ease;
 }
 
 .quick-actions {
@@ -1647,7 +1676,8 @@ section.animate-in .signature-card:nth-child(6) {
 .action-btn {
   padding: 0.8rem 1.5rem;
   background: var(--warm-gold);
-  color: var(--white);
+  color: #0f172a;
+  font-weight: 600;
   border: none;
   border-radius: 25px;
   cursor: pointer;
@@ -1663,12 +1693,13 @@ section.animate-in .signature-card:nth-child(6) {
   height: 400px;
   border-radius: 12px;
   overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.15);
 }
 
 .map-placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #e0e0e0, #c0c0c0);
+  background: linear-gradient(135deg, #1e293b, #0f172a);
 }
 
 /* SECTION 10 - PREMIUM FOOTER */

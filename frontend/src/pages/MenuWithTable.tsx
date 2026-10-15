@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { TableQRCode } from "../components/TableQRCode";
+import { ThemeToggle } from "../components/ThemeToggle";
 import "./MenuWithTable.css";
 
 type MenuItem = {
@@ -127,21 +128,24 @@ export function MenuWithTable() {
 
   return (
     <>
-      <div style={{ padding: "1rem", maxWidth: "1200px", margin: "0 auto" }}>
+      <ThemeToggle variant="floating" />
+      <div style={{ padding: "1.5rem 1rem", maxWidth: "1200px", margin: "0 auto" }}>
         {/* Header */}
         <div
           style={{
             textAlign: "center",
             marginBottom: "2rem",
-            padding: "1rem",
-            background: "rgba(15, 23, 42, 0.6)",
-            borderRadius: "0.5rem",
+            padding: "1.5rem",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-color)",
+            borderRadius: "0.75rem",
+            boxShadow: "var(--shadow-card)",
           }}
         >
-          <h1 style={{ margin: "0 0 0.5rem 0", color: "#f8fafc" }}>
+          <h1 style={{ margin: "0 0 0.5rem 0", color: "var(--text-heading)" }}>
             🍽️ Kenbon Restaurant
           </h1>
-          <p style={{ margin: "0", color: "#94a3b8" }}>
+          <p style={{ margin: "0", color: "var(--text-muted)" }}>
             {tableId ? `Table ${tableId} - Browse & Order` : "Browse Menu"}
           </p>
           {tableId && <TableQRCode tableId={tableId} />}
@@ -152,12 +156,14 @@ export function MenuWithTable() {
           <div
             style={{
               marginBottom: "2rem",
-              padding: "1rem",
-              background: "rgba(30, 41, 59, 0.4)",
-              borderRadius: "0.5rem",
+              padding: "1.5rem",
+              background: "var(--bg-card)",
+              border: "1px solid var(--border-color)",
+              borderRadius: "0.75rem",
+              boxShadow: "var(--shadow-card)",
             }}
           >
-            <h3 style={{ margin: "0 0 1rem 0", color: "#e2e8f0" }}>
+            <h3 style={{ margin: "0 0 1rem 0", color: "var(--text-heading)" }}>
               Your Information
             </h3>
             <input
@@ -168,12 +174,13 @@ export function MenuWithTable() {
               style={{
                 width: "100%",
                 padding: "0.75rem",
-                borderRadius: "0.25rem",
-                border: "1px solid rgba(148, 163, 184, 0.3)",
-                background: "rgba(15, 23, 42, 0.5)",
-                color: "#f8fafc",
+                borderRadius: "0.375rem",
+                border: "1px solid var(--border-color)",
+                background: "var(--bg-card-muted)",
+                color: "var(--text-primary)",
                 fontSize: "1rem",
                 marginBottom: "1rem",
+                boxSizing: "border-box",
               }}
             />
             <textarea
@@ -183,13 +190,14 @@ export function MenuWithTable() {
               style={{
                 width: "100%",
                 padding: "0.75rem",
-                borderRadius: "0.25rem",
-                border: "1px solid rgba(148, 163, 184, 0.3)",
-                background: "rgba(15, 23, 42, 0.5)",
-                color: "#f8fafc",
+                borderRadius: "0.375rem",
+                border: "1px solid var(--border-color)",
+                background: "var(--bg-card-muted)",
+                color: "var(--text-primary)",
                 fontSize: "1rem",
                 minHeight: "80px",
                 resize: "vertical",
+                boxSizing: "border-box",
               }}
             />
           </div>
@@ -200,9 +208,9 @@ export function MenuWithTable() {
           <div key={category.id} style={{ marginBottom: "2rem" }}>
             <h2
               style={{
-                color: "#e2e8f0",
+                color: "var(--text-heading)",
                 marginBottom: "1rem",
-                borderBottom: "2px solid #3b82f6",
+                borderBottom: "2px solid var(--primary-color)",
                 paddingBottom: "0.5rem",
               }}
             >
@@ -221,22 +229,23 @@ export function MenuWithTable() {
                   <div
                     key={item.id}
                     style={{
-                      background: "rgba(30, 41, 59, 0.6)",
-                      border: "1px solid rgba(148, 163, 184, 0.2)",
-                      borderRadius: "0.5rem",
-                      padding: "1rem",
+                      background: "var(--bg-card)",
+                      border: "1px solid var(--border-color)",
+                      borderRadius: "0.75rem",
+                      padding: "1.25rem",
+                      boxShadow: "var(--shadow-card)",
                       opacity: item.isAvailable ? 1 : 0.6,
                     }}
                   >
                     <div style={{ marginBottom: "1rem" }}>
-                      <h3 style={{ margin: "0 0 0.5rem 0", color: "#f8fafc" }}>
+                      <h3 style={{ margin: "0 0 0.5rem 0", color: "var(--text-heading)" }}>
                         {item.name}
                       </h3>
                       {item.description && (
                         <p
                           style={{
                             margin: "0 0 1rem 0",
-                            color: "#94a3b8",
+                            color: "var(--text-muted)",
                             fontSize: "0.9rem",
                           }}
                         >
@@ -247,10 +256,10 @@ export function MenuWithTable() {
                         style={{
                           fontSize: "1.25rem",
                           fontWeight: "bold",
-                          color: "#22c55e",
+                          color: "var(--price-color)",
                         }}
                       >
-                        ${item.price}
+                        ETB {item.price}
                       </div>
                     </div>
 
@@ -290,7 +299,8 @@ export function MenuWithTable() {
                               style={{
                                 minWidth: "2rem",
                                 textAlign: "center",
-                                color: "#f8fafc",
+                                color: "var(--text-heading)",
+                                fontWeight: "600",
                               }}
                             >
                               {selectedItems.find(
@@ -350,15 +360,16 @@ export function MenuWithTable() {
                 position: "sticky",
                 bottom: "20px",
                 left: "20px",
-                background: "rgba(15, 23, 42, 0.95)",
-                border: "1px solid rgba(148, 163, 184, 0.3)",
-                borderRadius: "0.5rem",
-                padding: "1rem",
+                background: "var(--bg-card)",
+                border: "1px solid var(--border-color)",
+                borderRadius: "0.75rem",
+                padding: "1.25rem",
                 minWidth: "300px",
-                color: "#e2e8f0",
+                color: "var(--text-primary)",
+                boxShadow: "var(--shadow-card)",
               }}
             >
-              <h3 style={{ margin: "0 0 1rem 0" }}>Your Order</h3>
+              <h3 style={{ margin: "0 0 1rem 0", color: "var(--text-heading)" }}>Your Order</h3>
 
               {selectedItems.map((item) => {
                 const menuItem = menuItems.find(
@@ -370,7 +381,7 @@ export function MenuWithTable() {
                     style={{
                       marginBottom: "0.5rem",
                       padding: "0.5rem 0",
-                      borderBottom: "1px solid rgba(148, 163, 184, 0.2)",
+                      borderBottom: "1px solid var(--border-color)",
                     }}
                   >
                     <div
@@ -380,9 +391,9 @@ export function MenuWithTable() {
                         alignItems: "center",
                       }}
                     >
-                      <span>{menuItem?.name}</span>
-                      <span>
-                        {item.quantity}x ${menuItem?.price}
+                      <span style={{ color: "var(--text-heading)" }}>{menuItem?.name}</span>
+                      <span style={{ color: "var(--price-color)", fontWeight: "600" }}>
+                        {item.quantity}x ETB {menuItem?.price}
                       </span>
                     </div>
                   </div>
@@ -393,7 +404,7 @@ export function MenuWithTable() {
                 style={{
                   marginTop: "1rem",
                   paddingTop: "1rem",
-                  borderTop: "2px solid #3b82f6",
+                  borderTop: "2px solid var(--primary-color)",
                   textAlign: "center",
                 }}
               >
@@ -402,9 +413,10 @@ export function MenuWithTable() {
                     fontSize: "1.5rem",
                     fontWeight: "bold",
                     marginBottom: "1rem",
+                    color: "var(--text-heading)",
                   }}
                 >
-                  Total: ${getTotalPrice().toFixed(2)}
+                  Total: ETB {getTotalPrice().toFixed(2)}
                 </div>
                 <button
                   onClick={placeOrder}
@@ -417,6 +429,7 @@ export function MenuWithTable() {
                     fontSize: "1.1rem",
                     cursor: "pointer",
                     width: "100%",
+                    fontWeight: "600",
                   }}
                 >
                   🍽️ Place Order
@@ -425,7 +438,7 @@ export function MenuWithTable() {
                   style={{
                     marginTop: "0.5rem",
                     fontSize: "0.85rem",
-                    color: "#94a3b8",
+                    color: "var(--text-muted)",
                     textAlign: "center",
                   }}
                 >

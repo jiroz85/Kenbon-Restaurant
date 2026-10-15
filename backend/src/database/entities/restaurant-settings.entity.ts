@@ -11,7 +11,7 @@ export class RestaurantSettings {
   @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
   serviceChargeRate: string;
 
-  @Column({ default: 'USD' })
+  @Column({ default: 'ETB' })
   currency: string;
 
   @Column({ default: 'en' })

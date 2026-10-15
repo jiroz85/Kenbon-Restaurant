@@ -66,11 +66,11 @@ export function Settings() {
         className="card"
         style={{
           marginTop: "1.5rem",
-          background: "rgba(30, 41, 59, 0.6)",
-          border: "1px solid rgba(148, 163, 184, 0.2)",
+          background: "var(--bg-card)",
+          border: "1px solid var(--border-color)",
         }}
       >
-        <h2 style={{ color: "#e2e8f0", marginTop: 0 }}>Billing</h2>
+        <h2 style={{ color: "var(--text-heading)", marginTop: 0 }}>Billing</h2>
         <div style={{ display: "grid", gap: "1rem", maxWidth: "400px" }}>
           <div className="form-group">
             <label className="form-label">Tax Rate (%)</label>
@@ -102,16 +102,17 @@ export function Settings() {
             <label className="form-label">Currency</label>
             <select
               className="form-select"
-              value={effective.currency ?? "USD"}
+              value={effective.currency ?? "ETB"}
               onChange={(e) =>
                 setForm((p) => ({ ...p, currency: e.target.value }))
               }
               disabled={!canEdit(user?.roles)}
             >
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="GBP">GBP</option>
-              <option value="NGN">NGN</option>
+              <option value="ETB">ETB – Ethiopian Birr</option>
+              <option value="USD">USD – US Dollar</option>
+              <option value="EUR">EUR – Euro</option>
+              <option value="GBP">GBP – British Pound</option>
+              <option value="NGN">NGN – Nigerian Naira</option>
             </select>
           </div>
           <div className="form-group">
@@ -142,7 +143,7 @@ export function Settings() {
 
       <p
         className="page-lead"
-        style={{ marginTop: "1.5rem", color: "#94a3b8", fontSize: "0.9rem" }}
+        style={{ marginTop: "1.5rem", color: "var(--text-muted)", fontSize: "0.9rem" }}
       >
         Tax and service charge will be applied to order totals. Currency is used
         for display.

@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
+import { ThemeToggle } from '../components/ThemeToggle';
 import './Order.css';
 
 export function Order() {
   return (
     <div className="order-page">
+      <ThemeToggle variant="floating" />
       <div className="container">
         <div className="order-header">
           <Link to="/" className="back-link">← Back to Home</Link>
@@ -17,7 +19,7 @@ export function Order() {
               <h3>Delivery</h3>
               <p>Get your food delivered to your doorstep</p>
               <ul>
-                <li>Free delivery on orders over $50</li>
+                <li>Free delivery on orders over ETB 500</li>
                 <li>30-45 minute delivery time</li>
                 <li>Track your order in real-time</li>
               </ul>
@@ -44,21 +46,21 @@ export function Order() {
                   <h4>Wagyu Beef Tenderloin</h4>
                   <p>28-day aged with truffle mashed potatoes</p>
                 </div>
-                <div className="item-price">$125</div>
+                <div className="item-price">ETB 125</div>
               </div>
               <div className="menu-item">
                 <div className="item-info">
                   <h4>Lobster Thermidor</h4>
                   <p>Fresh Maine lobster with cognac cream</p>
                 </div>
-                <div className="item-price">$68</div>
+                <div className="item-price">ETB 68</div>
               </div>
               <div className="menu-item">
                 <div className="item-info">
                   <h4>Truffle Risotto</h4>
                   <p>Arborio rice with black truffle</p>
                 </div>
-                <div className="item-price">$48</div>
+                <div className="item-price">ETB 48</div>
               </div>
             </div>
             

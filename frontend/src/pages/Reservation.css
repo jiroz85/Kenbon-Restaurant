@@ -1,7 +1,10 @@
 .reservation-page {
   min-height: 100vh;
-  background: var(--soft-cream);
+  background: var(--bg-page-gradient);
+  color: var(--text-primary);
   padding: 2rem 0;
+  transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
 }
 
 .reservation-header {
@@ -19,28 +22,31 @@
 }
 
 .back-link:hover {
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
 }
 
 .reservation-header h1 {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 3rem;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
   margin-bottom: 1rem;
+  transition: color 0.3s ease;
 }
 
 .reservation-header p {
-  color: var(--medium-gray);
+  color: var(--text-muted);
   font-size: 1.1rem;
 }
 
 .reservation-form-container {
   max-width: 600px;
   margin: 0 auto;
-  background: var(--white);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   padding: 3rem;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-card);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .form-row {
@@ -58,7 +64,7 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: var(--deep-charcoal);
+  color: var(--text-secondary);
 }
 
 .form-group input,
@@ -66,11 +72,12 @@
 .form-group textarea {
   width: 100%;
   padding: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color-strong);
   border-radius: 8px;
   font-size: 1rem;
-  background: var(--white);
-  transition: border-color 0.3s ease;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  transition: border-color 0.3s ease, background 0.3s ease;
 }
 
 .form-group input:focus,
@@ -78,6 +85,7 @@
 .form-group textarea:focus {
   outline: none;
   border-color: var(--warm-gold);
+  box-shadow: 0 0 0 2px var(--warm-gold-subtle);
 }
 
 .form-group textarea {

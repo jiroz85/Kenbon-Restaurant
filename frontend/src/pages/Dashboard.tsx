@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { getStatusBadgeClass } from "../constants/orderStatus";
 import { getSocket } from "../lib/socket";
@@ -19,7 +19,6 @@ async function fetchStats(): Promise<Stats> {
 }
 
 export function Dashboard() {
-  const queryClient = useQueryClient();
   const {
     data: stats,
     isLoading,
@@ -140,7 +139,7 @@ export function Dashboard() {
         </div>
         <div className="dashboard-card">
           <span className="dashboard-card-label">Today&apos;s Revenue</span>
-          <span className="dashboard-card-value">${stats.todayRevenue}</span>
+          <span className="dashboard-card-value">ETB {stats.todayRevenue}</span>
         </div>
         <div className="dashboard-card">
           <span className="dashboard-card-label">Total Orders</span>
@@ -148,7 +147,7 @@ export function Dashboard() {
         </div>
         <div className="dashboard-card">
           <span className="dashboard-card-label">Total Revenue</span>
-          <span className="dashboard-card-value">${stats.totalRevenue}</span>
+          <span className="dashboard-card-value">ETB {stats.totalRevenue}</span>
         </div>
       </div>
 

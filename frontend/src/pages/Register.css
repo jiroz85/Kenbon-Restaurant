@@ -4,31 +4,35 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+  background: var(--bg-page-gradient);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
 }
 
 .register-card {
   width: 100%;
   max-width: 380px;
-  background: rgba(30, 41, 59, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-card);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .register-title {
   margin: 0 0 0.25rem;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--text-heading);
   text-align: center;
 }
 
 .register-subtitle {
   margin: 0 0 1.5rem;
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   text-align: center;
 }
 
@@ -44,22 +48,23 @@
   gap: 0.4rem;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #e2e8f0;
+  color: var(--text-secondary);
 }
 
 .register-input {
   padding: 0.6rem 0.85rem;
   font-size: 1rem;
-  color: #0f172a;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border: 1px solid var(--border-color-strong);
   border-radius: 0.5rem;
+  transition: border-color 0.2s, background 0.3s, color 0.3s;
 }
 
 .register-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+  border-color: var(--warm-gold, #c59b27);
+  box-shadow: 0 0 0 2px var(--warm-gold-subtle);
 }
 
 .register-error {
@@ -74,15 +79,15 @@
   font-size: 1rem;
   font-weight: 600;
   color: #fff;
-  background: #2563eb;
+  background: var(--warm-gold, #c59b27);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.15s;
 }
 
 .register-submit:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: var(--warm-gold-hover, #b8860b);
 }
 
 .register-submit:disabled {
@@ -93,9 +98,9 @@
 .register-footer {
   margin: 1.25rem 0 0;
   padding-top: 1.25rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  border-top: 1px solid var(--border-color);
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   text-align: center;
 }
 
@@ -215,13 +220,6 @@
     padding-top: 0.875rem;
   }
 }
-  padding: 0.6rem 0.85rem;
-  font-size: 1rem;
-  color: #0f172a;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-}
 
 .register-input:focus {
   outline: none;
@@ -242,15 +240,15 @@
   font-size: 1rem;
   font-weight: 600;
   color: #fff;
-  background: #2563eb;
+  background: var(--warm-gold, #c59b27);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.15s;
 }
 
 .register-submit:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: var(--warm-gold-hover, #b8860b);
 }
 
 .register-submit:disabled {
@@ -261,17 +259,18 @@
 .register-footer {
   margin: 1.25rem 0 0;
   padding-top: 1.25rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  border-top: 1px solid var(--border-color);
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   text-align: center;
 }
 
 .register-footer a {
-  color: #93c5fd;
-  font-weight: 500;
+  color: var(--warm-gold, #c59b27);
+  font-weight: 600;
 }
 
 .register-footer a:hover {
   text-decoration: underline;
+  color: var(--warm-gold-hover, #b8860b);
 }

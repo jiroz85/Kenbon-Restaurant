@@ -20,7 +20,7 @@ export class SettingsService {
         id: DEFAULT_ID,
         taxRate: '0',
         serviceChargeRate: '0',
-        currency: 'USD',
+        currency: 'ETB',
         locale: 'en',
       });
       await this.settingsRepo.save(settings);
@@ -35,7 +35,7 @@ export class SettingsService {
         id: DEFAULT_ID,
         taxRate: dto.taxRate ?? '0',
         serviceChargeRate: dto.serviceChargeRate ?? '0',
-        currency: dto.currency ?? 'USD',
+        currency: dto.currency ?? 'ETB',
         locale: dto.locale ?? 'en',
       });
     } else {

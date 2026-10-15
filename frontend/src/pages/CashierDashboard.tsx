@@ -66,7 +66,7 @@ export function CashierDashboard() {
   useEffect(() => {
     const socket = getSocket();
 
-    socket.on("order.created", (order: Order) => {
+    socket.on("order.created", (_order: Order) => {
       // Refresh the list when new orders are created
       queryClient.invalidateQueries({ queryKey: ["orders", "pending-payment"] });
     });
@@ -128,7 +128,7 @@ export function CashierDashboard() {
                 </div>
                 <div className="order-details">
                   <span className="order-type">{order.type}</span>
-                  <span className="order-total">${order.grandTotal}</span>
+                  <span className="order-total">ETB {order.grandTotal}</span>
                   <span className="order-time">
                     {new Date(order.createdAt).toLocaleTimeString()}
                   </span>
@@ -188,7 +188,7 @@ export function CashierDashboard() {
                       <span className="item-name">{item.menuItem.name}</span>
                       <span className="item-quantity">×{item.quantity}</span>
                     </div>
-                    <span className="item-price">${item.menuItem.price}</span>
+                    <span className="item-price">ETB {item.menuItem.price}</span>
                     {item.notes && (
                       <div className="item-notes">Notes: {item.notes}</div>
                     )}
@@ -197,7 +197,7 @@ export function CashierDashboard() {
               </div>
 
               <div className="order-total-section">
-                <h3>Total: ${selectedOrder.grandTotal}</h3>
+                <h3>Total: ETB {selectedOrder.grandTotal}</h3>
               </div>
 
               <div className="payment-actions">

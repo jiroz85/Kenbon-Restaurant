@@ -1,7 +1,10 @@
 .order-page {
   min-height: 100vh;
-  background: var(--soft-cream);
+  background: var(--bg-page-gradient);
+  color: var(--text-primary);
   padding: 2rem 0;
+  transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
 }
 
 .order-header {
@@ -19,18 +22,19 @@
 }
 
 .back-link:hover {
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
 }
 
 .order-header h1 {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 3rem;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
   margin-bottom: 1rem;
+  transition: color 0.3s ease;
 }
 
 .order-header p {
-  color: var(--medium-gray);
+  color: var(--text-muted);
   font-size: 1.1rem;
 }
 
@@ -49,26 +53,29 @@
 }
 
 .option-card {
-  background: var(--white);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .option-card:hover {
   transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .option-card h3 {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.8rem;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
   margin-bottom: 1rem;
+  transition: color 0.3s ease;
 }
 
 .option-card p {
-  color: var(--medium-gray);
+  color: var(--text-secondary);
   margin-bottom: 1.5rem;
 }
 
@@ -80,7 +87,7 @@
 
 .option-card li {
   padding: 0.5rem 0;
-  color: var(--dark-gray);
+  color: var(--text-secondary);
   position: relative;
   padding-left: 1.5rem;
 }
@@ -97,11 +104,11 @@
   width: 100%;
   padding: 1rem;
   background: var(--warm-gold);
-  color: var(--white);
+  color: #0f172a;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -112,17 +119,20 @@
 }
 
 .menu-preview {
-  background: var(--white);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-card);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .menu-preview h2 {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 2rem;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
   margin-bottom: 2rem;
+  transition: color 0.3s ease;
 }
 
 .menu-items {
@@ -134,7 +144,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .menu-item:last-child {
@@ -144,19 +154,20 @@
 .item-info h4 {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.2rem;
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
   margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
 }
 
 .item-info p {
-  color: var(--medium-gray);
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
 .item-price {
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--warm-gold);
+  color: var(--price-color);
 }
 
 .view-full-menu {
@@ -171,7 +182,7 @@
 }
 
 .view-full-menu a:hover {
-  color: var(--deep-charcoal);
+  color: var(--text-heading);
 }
 
 @media (max-width: 768px) {

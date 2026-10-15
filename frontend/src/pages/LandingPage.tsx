@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../hooks/useAuth";
+import { ThemeToggle } from "../components/ThemeToggle";
 import { api } from "../lib/api";
 import "./LandingPage.css";
 
@@ -15,6 +16,7 @@ type MenuItem = {
   image?: string;
   variants?: { id: string; name: string; price: string }[];
   addons?: { id: string; name: string; price: string }[];
+  isPopular?: boolean;
 };
 
 type Category = {
@@ -240,21 +242,21 @@ export function LandingPage() {
     {
       name: "Chef's Tasting Menu",
       description: "7-course journey through seasonal ingredients",
-      price: "$185",
+      price: "ETB 185",
       story: "Inspired by today's morning market visit",
       availability: "Only 8 servings left",
     },
     {
       name: "Seafood Tower",
       description: "Oysters, shrimp, crab, lobster with champagne mignonette",
-      price: "$125",
+      price: "ETB 125",
       story: "Fresh catch from our local fisherman",
       availability: "Available today only",
     },
     {
       name: "Wine Pairing Dinner",
       description: "5 courses with sommelier-selected wines",
-      price: "$225",
+      price: "ETB 225",
       story: "Featured vintner: Château Margaux 2018",
       availability: "6 seats remaining",
     },
@@ -311,7 +313,7 @@ export function LandingPage() {
     const transformToSignature = (item: MenuItem, category: string) => ({
       name: item.name,
       description: item.description || "Delicious preparation from our kitchen",
-      price: `$${item.price}`,
+      price: `ETB ${item.price}`,
       badge: item.isPopular ? "Popular" : "Chef's Choice",
       chefNotes: "Prepared with fresh ingredients",
       pairing:
@@ -422,6 +424,7 @@ export function LandingPage() {
             </button>
           </nav>
           <div className="hero-nav-ctas">
+            <ThemeToggle variant="nav" />
             <Link
               to="/reservation"
               className="hero-nav-cta hero-nav-cta-primary"
@@ -691,7 +694,7 @@ export function LandingPage() {
                         <span className="unavailable-badge">✗ Unavailable</span>
                       )}
                     </div>
-                    <p className="menu-item-price">${item.price}</p>
+                    <p className="menu-item-price">ETB {item.price}</p>
                     <Link to="/login" className="menu-order-btn" replace>
                       Order Now
                     </Link>
@@ -844,12 +847,12 @@ export function LandingPage() {
                 <p>
                   Exclusive kitchen-side dining experience with chef interaction
                 </p>
-                <span className="option-price">+$150</span>
+                <span className="option-price">+ETB 150</span>
               </div>
               <div className="option-card">
                 <h3>Wine Pairing Experience</h3>
                 <p>Sommelier-selected wine pairings for each course</p>
-                <span className="option-price">+$85</span>
+                <span className="option-price">+ETB 85</span>
               </div>
             </div>
             <button type="submit" className="cta-primary reservation-cta">
@@ -931,7 +934,7 @@ export function LandingPage() {
                 width="100%"
                 height="450"
                 style={{ border: 0, borderRadius: "0.5rem" }}
-                allowFullScreen=""
+                allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Kenbon Restaurant Location"

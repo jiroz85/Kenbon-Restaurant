@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { ThemeToggle } from "../components/ThemeToggle";
 import "./Register.css";
 
 export function Register() {
@@ -90,6 +91,7 @@ export function Register() {
 
   return (
     <div className="register-page">
+      <ThemeToggle variant="floating" />
       <div className="register-card">
         <h1 className="register-title">Create account</h1>
         <p className="register-subtitle">Kenbon Restaurant</p>

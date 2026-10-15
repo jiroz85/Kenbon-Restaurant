@@ -115,7 +115,19 @@ export function Users() {
   });
   const deleteMutation = useMutation({
     mutationFn: deleteUser,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["users"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      setError(null);
+    },
+    onError: (err: {
+      response?: { data?: { message?: string | string[] } };
+    }) => {
+      setError(
+        Array.isArray(err.response?.data?.message)
+          ? err.response.data.message[0]
+          : err.response?.data?.message || "Failed to delete user",
+      );
+    },
   });
 
   const handleCreate = () => {
@@ -199,11 +211,11 @@ export function Users() {
           className="card"
           style={{
             marginTop: "1.5rem",
-            background: "rgba(30, 41, 59, 0.6)",
-            border: "1px solid rgba(148, 163, 184, 0.2)",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-color)",
           }}
         >
-          <h2 style={{ color: "#e2e8f0", marginTop: 0 }}>Create User</h2>
+          <h2 style={{ color: "var(--text-heading)", marginTop: 0 }}>Create User</h2>
           <div style={{ display: "grid", gap: "1rem", maxWidth: "400px" }}>
             <div className="form-group">
               <label className="form-label">Email</label>
@@ -396,10 +408,14 @@ export function Users() {
                           <button
                             className="btn btn-danger btn-sm"
                             style={{ marginLeft: "0.5rem" }}
-                            onClick={() => deleteMutation.mutate(u.id)}
+                            onClick={() => {
+                              if (window.confirm(`Are you sure you want to delete ${u.username || u.email}?`)) {
+                                deleteMutation.mutate(u.id);
+                              }
+                            }}
                             disabled={deleteMutation.isPending}
                           >
-                            Delete
+                            {deleteMutation.isPending && deleteMutation.variables === u.id ? "Deleting..." : "Delete"}
                           </button>
                         )}
                       </td>
@@ -415,7 +431,7 @@ export function Users() {
       {users.length === 0 && !showCreate && (
         <p
           className="page-lead"
-          style={{ marginTop: "1rem", color: "#94a3b8" }}
+          style={{ marginTop: "1rem", color: "var(--text-muted)" }}
         >
           No users yet. Add one above.
         </p>

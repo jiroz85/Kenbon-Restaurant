@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { ThemeToggle } from "../components/ThemeToggle";
 import "./VerifyEmailRequired.css";
 
 interface LocationState {
@@ -49,6 +50,7 @@ export function VerifyEmailRequired() {
 
   return (
     <div className="verify-required-page">
+      <ThemeToggle variant="floating" />
       <div className="verify-required-card">
         <div className="verify-required-header">
           <div className="email-icon">📧</div>

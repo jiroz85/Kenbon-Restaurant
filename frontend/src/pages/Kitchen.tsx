@@ -24,7 +24,7 @@ type Order = {
 };
 
 async function fetchKitchenOrders(): Promise<Order[]> {
-  const { data } = await api.get<Order[]>("/orders/status/NEW");
+  const { data } = await api.get<Order[]>("/orders/status/PAID");
   const kitchen = await api.get<Order[]>("/orders/status/IN_KITCHEN");
   return [...(data || []), ...(kitchen.data || [])];
 }
@@ -130,7 +130,7 @@ export function Kitchen() {
                 marginBottom: "0.75rem",
               }}
             >
-              <span style={{ fontWeight: 600, color: "#f8fafc" }}>
+              <span style={{ fontWeight: 600, color: "var(--text-heading)" }}>
                 {order.table?.label ?? order.type} • {order.id.slice(0, 8)}
               </span>
               <div
@@ -139,7 +139,7 @@ export function Kitchen() {
                 <span className={statusBadgeClass(order.status)}>
                   {order.status}
                 </span>
-                <div style={{ fontSize: "0.85rem", color: "#94a3b8" }}>
+                <div style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
                   {order.type === "DINE_IN"
                     ? `Table ${order.table?.label || "N/A"}`
                     : order.customerName
@@ -152,11 +152,11 @@ export function Kitchen() {
               {order.items.map((i) => (
                 <li
                   key={i.id}
-                  style={{ padding: "0.25rem 0", color: "#e2e8f0" }}
+                  style={{ padding: "0.25rem 0", color: "var(--text-primary)" }}
                 >
                   <strong>{i.menuItem.name}</strong> ×{i.quantity}
                   {i.notes && (
-                    <span style={{ color: "#94a3b8", marginLeft: "0.5rem" }}>
+                    <span style={{ color: "var(--text-muted)", marginLeft: "0.5rem" }}>
                       — {i.notes}
                     </span>
                   )}
@@ -171,7 +171,7 @@ export function Kitchen() {
                 flexWrap: "wrap",
               }}
             >
-              {order.status === "NEW" && (
+              {order.status === "PAID" && (
                 <button
                   className="btn btn-primary btn-sm"
                   onClick={() => markInKitchen(order.id)}
@@ -180,7 +180,7 @@ export function Kitchen() {
                   In Kitchen
                 </button>
               )}
-              {(order.status === "NEW" || order.status === "IN_KITCHEN") && (
+              {(order.status === "PAID" || order.status === "IN_KITCHEN") && (
                 <button
                   className="btn btn-primary btn-sm"
                   onClick={() => markReady(order.id)}
@@ -197,7 +197,7 @@ export function Kitchen() {
       {sorted.length === 0 && (
         <p
           className="page-lead"
-          style={{ marginTop: "2rem", color: "#94a3b8" }}
+          style={{ marginTop: "2rem", color: "var(--text-muted)" }}
         >
           No orders in queue
         </p>

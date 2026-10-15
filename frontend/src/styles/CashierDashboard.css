@@ -32,17 +32,18 @@
 
 /* Orders Section */
 .orders-section {
-  background: rgba(30, 41, 59, 0.6);
+  background: var(--bg-card);
   border-radius: 0.5rem;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
   overflow-y: auto;
 }
 
 .orders-section h2 {
   margin: 0 0 1rem 0;
-  color: #f8fafc;
+  color: var(--text-heading);
   font-size: 1.2rem;
   font-weight: 600;
 }
@@ -55,8 +56,8 @@
 
 /* Order Cards */
 .order-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-card-muted);
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   padding: 1rem;
   cursor: pointer;
@@ -64,15 +65,16 @@
 }
 
 .order-card:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
+  border-color: var(--primary-color);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-card);
 }
 
 .order-card.selected {
-  background: rgba(59, 130, 246, 0.2);
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  background: rgba(197, 155, 39, 0.12);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(197, 155, 39, 0.25);
 }
 
 .order-info {
@@ -84,12 +86,12 @@
 
 .order-id {
   font-weight: 600;
-  color: #f8fafc;
+  color: var(--text-heading);
   font-family: monospace;
 }
 
 .order-customer {
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 0.9rem;
 }
 
@@ -129,11 +131,12 @@
 
 /* Order Details Section */
 .order-details-section {
-  background: rgba(30, 41, 59, 0.6);
+  background: var(--bg-card);
   border-radius: 0.5rem;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
   overflow-y: auto;
 }
 
@@ -149,18 +152,18 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .order-header h3 {
   margin: 0;
-  color: #f8fafc;
+  color: var(--text-heading);
   font-size: 1.2rem;
   font-weight: 600;
 }
 
 .order-type-badge {
-  background: #3b82f6;
+  background: var(--primary-color);
   color: white;
   padding: 0.3rem 0.8rem;
   border-radius: 1rem;
@@ -178,7 +181,7 @@
 .customer-info h4,
 .order-items h4 {
   margin: 0 0 0.75rem 0;
-  color: #f8fafc;
+  color: var(--text-heading);
   font-size: 1rem;
   font-weight: 600;
 }
@@ -186,11 +189,11 @@
 .customer-info p {
   margin: 0.25rem 0;
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
 .customer-info strong {
-  color: #e2e8f0;
+  color: var(--text-heading);
 }
 
 .order-item {
@@ -198,7 +201,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-card-muted);
+  border: 1px solid var(--border-color);
   border-radius: 0.375rem;
   margin-bottom: 0.5rem;
 }
@@ -210,13 +214,14 @@
 }
 
 .item-name {
-  color: #f8fafc;
+  color: var(--text-heading);
   font-weight: 500;
 }
 
 .item-quantity {
-  background: rgba(255, 255, 255, 0.1);
-  color: #e2e8f0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-heading);
   padding: 0.2rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.8rem;
@@ -224,27 +229,27 @@
 }
 
 .item-price {
-  color: #86efac;
+  color: var(--price-color);
   font-weight: 600;
 }
 
 .item-notes {
   margin-top: 0.5rem;
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-muted);
   font-style: italic;
 }
 
 .order-total-section {
   margin-top: auto;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-color);
   text-align: center;
 }
 
 .order-total-section h3 {
   margin: 0;
-  color: #86efac;
+  color: var(--price-color);
   font-size: 1.5rem;
   font-weight: 700;
 }

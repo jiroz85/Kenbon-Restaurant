@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { ThemeToggle } from "../components/ThemeToggle";
 import "./Login.css";
 
 export function Login() {
@@ -15,7 +16,6 @@ export function Login() {
     number | null
   >(null);
 
-  const navigate = useNavigate();
   const from =
     (location.state as { from?: { pathname: string } } | null)?.from
       ?.pathname ?? "/dashboard";
@@ -127,6 +127,7 @@ export function Login() {
 
   return (
     <div className="login-page">
+      <ThemeToggle variant="floating" />
       <div className="login-card">
         <h1 className="login-title">Kenbon Restaurant</h1>
         <p className="login-subtitle">Sign in to continue</p>

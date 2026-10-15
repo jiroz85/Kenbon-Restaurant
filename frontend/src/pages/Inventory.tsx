@@ -135,11 +135,11 @@ export function Inventory() {
           className="card"
           style={{
             marginTop: "1.5rem",
-            background: "rgba(30, 41, 59, 0.6)",
-            border: "1px solid rgba(148, 163, 184, 0.2)",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-color)",
           }}
         >
-          <h2 style={{ color: "#e2e8f0", marginTop: 0, marginBottom: "1rem" }}>
+          <h2 style={{ color: "var(--text-heading)", marginTop: 0, marginBottom: "1rem" }}>
             Add Ingredient
           </h2>
           <div
@@ -223,7 +223,7 @@ export function Inventory() {
                 borderTop: "1px solid rgba(148, 163, 184, 0.2)",
               }}
             >
-              <h3 style={{ color: "#e2e8f0", marginTop: 0 }}>Adjust stock</h3>
+              <h3 style={{ color: "var(--text-heading)", marginTop: 0 }}>Adjust stock</h3>
               <div
                 style={{
                   display: "flex",

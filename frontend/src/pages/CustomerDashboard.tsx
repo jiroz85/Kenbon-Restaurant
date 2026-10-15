@@ -395,7 +395,7 @@ export function CustomerDashboard() {
                   </span>
                 </div>
                 <div className="order-details">
-                  <p className="order-total">${order.total}</p>
+                  <p className="order-total">ETB {order.total}</p>
                   <p className="order-date">
                     {new Date(order.createdAt).toLocaleDateString()}
                   </p>
@@ -461,7 +461,7 @@ export function CustomerDashboard() {
                 {item.description && (
                   <p className="menu-item-description">{item.description}</p>
                 )}
-                <div className="menu-item-price">${item.price}</div>
+                <div className="menu-item-price">ETB {item.price}</div>
 
                 {/* Variants */}
                 {item.variants && item.variants.length > 0 && (
@@ -471,7 +471,7 @@ export function CustomerDashboard() {
                       <label key={variant.id} className="variant-option">
                         <input type="radio" name={`variant-${item.id}`} />
                         <span>
-                          {variant.name} +${variant.price}
+                          {variant.name} +ETB {variant.price}
                         </span>
                       </label>
                     ))}
@@ -486,7 +486,7 @@ export function CustomerDashboard() {
                       <label key={addon.id} className="addon-option">
                         <input type="checkbox" />
                         <span>
-                          {addon.name} +${addon.price}
+                          {addon.name} +ETB {addon.price}
                         </span>
                       </label>
                     ))}
@@ -515,7 +515,7 @@ export function CustomerDashboard() {
               <div key={item.menuItemId} className="cart-item">
                 <div className="cart-item-info">
                   <span>{menuItem?.name}</span>
-                  <span>${menuItem?.price}</span>
+                  <span>ETB {menuItem?.price}</span>
                 </div>
                 <div className="cart-item-controls">
                   <button
@@ -601,7 +601,7 @@ export function CustomerDashboard() {
           </div>
 
           <div className="cart-total">
-            <strong>Total: ${getTotalPrice().toFixed(2)}</strong>
+            <strong>Total: ETB {getTotalPrice().toFixed(2)}</strong>
           </div>
 
           <button

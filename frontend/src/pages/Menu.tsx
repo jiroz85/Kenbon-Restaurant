@@ -159,11 +159,11 @@ export function Menu() {
           className="card"
           style={{
             marginTop: "1.5rem",
-            background: "rgba(30, 41, 59, 0.6)",
-            border: "1px solid rgba(148, 163, 184, 0.2)",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-color)",
           }}
         >
-          <h2 style={{ color: "#e2e8f0", marginTop: 0, marginBottom: "1rem" }}>
+          <h2 style={{ color: "var(--text-heading)", marginTop: 0, marginBottom: "1rem" }}>
             Add Category
           </h2>
           <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
@@ -186,7 +186,7 @@ export function Menu() {
 
           <h2
             style={{
-              color: "#e2e8f0",
+              color: "var(--text-heading)",
               marginTop: "1.5rem",
               marginBottom: "1rem",
             }}
@@ -282,16 +282,18 @@ export function Menu() {
             <ul
               className="menu-list"
               style={{
-                background: "rgba(30, 41, 59, 0.4)",
+                background: "var(--bg-card)",
+                border: "1px solid var(--border-color)",
                 borderRadius: "0.75rem",
                 padding: "1rem",
+                boxShadow: "var(--shadow-sm)",
               }}
             >
               {itemsByCategory(cat.id).map((item) => (
                 <li
                   key={item.id}
                   className="menu-item"
-                  style={{ borderColor: "rgba(148, 163, 184, 0.2)" }}
+                  style={{ borderColor: "var(--border-color)" }}
                 >
                   {editingId === item.id ? (
                     <div
@@ -325,7 +327,7 @@ export function Menu() {
                           display: "flex",
                           alignItems: "center",
                           gap: "0.35rem",
-                          color: "#e2e8f0",
+                          color: "var(--text-primary)",
                         }}
                       >
                         <input
@@ -358,7 +360,7 @@ export function Menu() {
                       <div>
                         <span
                           className="menu-item-name"
-                          style={{ color: "#f8fafc" }}
+                          style={{ color: "var(--text-heading)" }}
                         >
                           {item.name}
                         </span>
@@ -373,7 +375,7 @@ export function Menu() {
                         {item.description && (
                           <p
                             className="menu-item-description"
-                            style={{ margin: "0.25rem 0 0" }}
+                            style={{ margin: "0.25rem 0 0", color: "var(--text-secondary)" }}
                           >
                             {item.description}
                           </p>
@@ -388,9 +390,9 @@ export function Menu() {
                       >
                         <span
                           className="menu-item-price"
-                          style={{ color: "#86efac" }}
+                          style={{ color: "var(--price-color)" }}
                         >
-                          ${item.price}
+                          ETB {item.price}
                         </span>
                         {canEdit(user?.roles) && (
                           <>
@@ -414,7 +416,7 @@ export function Menu() {
                 </li>
               ))}
               {itemsByCategory(cat.id).length === 0 && (
-                <li style={{ color: "#94a3b8", padding: "0.75rem" }}>
+                <li style={{ color: "var(--text-muted)", padding: "0.75rem" }}>
                   No items in this category
                 </li>
               )}
@@ -422,7 +424,7 @@ export function Menu() {
           </div>
         ))}
         {(!categories || categories.length === 0) && (
-          <p className="page-lead" style={{ color: "#94a3b8" }}>
+          <p className="page-lead" style={{ color: "var(--text-muted)" }}>
             No categories yet. Add one above.
           </p>
         )}

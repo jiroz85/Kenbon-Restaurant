@@ -9,23 +9,23 @@
 }
 
 .dashboard-card {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  border-radius: 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
   padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  transition: box-shadow 0.2s;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s, background 0.3s;
 }
 
 .dashboard-card:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .dashboard-card-label {
   display: block;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #94a3b8;
+  color: var(--text-muted);
   margin-bottom: 0.5rem;
 }
 
@@ -33,23 +33,24 @@
   display: block;
   font-size: 2rem;
   font-weight: 700;
-  color: #22c55e;
+  color: var(--price-color);
 }
 
 /* Dashboard Section */
 .dashboard-section {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  border-radius: 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
   padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-card);
+  transition: background 0.3s, border-color 0.3s;
 }
 
 .dashboard-section-title {
   margin: 0 0 1.5rem 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #f8fafc;
+  color: var(--text-heading);
 }
 
 /* Status List */
@@ -67,25 +68,25 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: rgba(30, 41, 59, 0.4);
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: var(--bg-card-muted);
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   transition: all 0.2s;
 }
 
 .dashboard-status-item:hover {
-  background: rgba(30, 41, 59, 0.6);
+  background: var(--bg-sidebar-hover);
 }
 
 .dashboard-status-name {
   font-weight: 500;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 0.875rem;
 }
 
 .dashboard-status-count {
   font-weight: 600;
-  color: #22c55e;
+  color: var(--price-color);
   font-size: 1rem;
 }
 

@@ -64,10 +64,6 @@ async function updateOrderStatus(orderId: string, status: OrderStatus) {
   });
   return data;
 }
-async function deleteOrder(orderId: string) {
-  const { data } = await api.delete(`/orders/${orderId}`);
-  return data;
-}
 
 const statusBadgeClass = getStatusBadgeClass;
 
@@ -176,7 +172,6 @@ export function Orders() {
     "SERVED",
   ];
   const canProgress = (order: Order) => {
-    const i = statusFlow.indexOf(order.status);
     const nextStat = nextStatus(order);
 
     // Only cashiers can process payments (PENDING_PAYMENT → PAID)
@@ -198,8 +193,6 @@ export function Orders() {
   };
   const canCancel = (order: Order) =>
     order.status === "PENDING_PAYMENT" &&
-    order.status !== "CANCELLED" &&
-    order.status !== "OUT_FOR_DELIVERY" &&
     !user?.roles?.includes("CASHIER") &&
     !user?.roles?.includes("KITCHEN");
   const nextStatus = (order: Order) => {
@@ -234,11 +227,11 @@ export function Orders() {
           className="card"
           style={{
             marginTop: "1.5rem",
-            background: "rgba(30, 41, 59, 0.6)",
-            border: "1px solid rgba(148, 163, 184, 0.2)",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-color)",
           }}
         >
-          <h2 style={{ color: "#e2e8f0", marginTop: 0 }}>Create Order</h2>
+          <h2 style={{ color: "var(--text-heading)", marginTop: 0 }}>Create Order</h2>
           <div className="form-group">
             <label className="form-label">Order Type</label>
             <select
@@ -330,7 +323,7 @@ export function Orders() {
                     ?.filter((m) => m.isAvailable)
                     .map((m) => (
                       <option key={m.id} value={m.id}>
-                        {m.name} – ${m.price}
+                        {m.name} – ETB {m.price}
                       </option>
                     ))}
                 </select>
@@ -416,7 +409,7 @@ export function Orders() {
                       .map((i) => `${i.menuItem.name} ×${i.quantity}`)
                       .join(", ")}
                   </td>
-                  <td>${o.grandTotal}</td>
+                  <td>ETB {o.grandTotal}</td>
                   <td>
                     <span className={statusBadgeClass(o.status)}>
                       {o.status}
