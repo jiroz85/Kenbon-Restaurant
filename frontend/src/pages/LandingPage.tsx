@@ -311,13 +311,23 @@ export function LandingPage() {
       )
       .slice(0, 1);
 
+    const signatureImageMap: Record<string, string> = {
+      "spring rolls": "/images/signature/spring-rolls.jpg",
+      "soup of the day": "/images/signature/soup-of-the-day.jpg",
+      "chicken teriyaki": "/images/signature/chicken-teriyaki.jpg",
+      "beef stir fry": "/images/signature/beef-stir-fry.jpg",
+      "ice cream": "/images/signature/ice-cream.jpg",
+      "fresh juice": "/images/signature/fresh-juice.jpg",
+    };
+
     // Transform menu items to signature dish format
-    const transformToSignature = (item: MenuItem, category: string) => ({
+    const transformToSignature = (item: MenuItem, category: string, index: number) => ({
       name: item.name,
       description: item.description || "Delicious preparation from our kitchen",
       price: `ETB ${item.price}`,
       badge: item.isPopular ? "Popular" : "Chef's Choice",
       chefNotes: "Prepared with fresh ingredients",
+      image: item.image || signatureImageMap[item.name.toLowerCase()] || `/images/signature/${["spring-rolls", "soup-of-the-day", "chicken-teriyaki", "beef-stir-fry", "ice-cream", "fresh-juice"][index % 6]}.jpg`,
       pairing:
         category === "starter"
           ? "White wine"
@@ -331,10 +341,10 @@ export function LandingPage() {
     });
 
     return [
-      ...starters.map((item) => transformToSignature(item, "starter")),
-      ...mains.map((item) => transformToSignature(item, "main")),
-      ...desserts.map((item) => transformToSignature(item, "dessert")),
-      ...drinks.map((item) => transformToSignature(item, "drink")),
+      ...starters.map((item, i) => transformToSignature(item, "starter", i)),
+      ...mains.map((item, i) => transformToSignature(item, "main", starters.length + i)),
+      ...desserts.map((item, i) => transformToSignature(item, "dessert", starters.length + mains.length + i)),
+      ...drinks.map((item, i) => transformToSignature(item, "drink", starters.length + mains.length + desserts.length + i)),
     ];
   }, [menuItems]);
 
@@ -495,9 +505,18 @@ export function LandingPage() {
             {signatureDishes.map((dish, index) => (
               <div key={index} className="signature-card">
                 <div className="dish-image">
-                  <div
-                    className={`image-placeholder signature-image-${index}`}
-                  ></div>
+                  {dish.image ? (
+                    <img
+                      src={dish.image}
+                      alt={dish.name}
+                      className="dish-img"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div
+                      className={`image-placeholder signature-image-${index}`}
+                    ></div>
+                  )}
                   {dish.badge && (
                     <span className="dish-badge">{dish.badge}</span>
                   )}

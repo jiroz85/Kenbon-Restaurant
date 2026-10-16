@@ -141,35 +141,29 @@
   background: none !important;
 }
 
-/* Signature Dish Images - Using reliable food URLs */
+/* Signature Dish Images - Local High-Resolution Photography */
 .image-placeholder.signature-image-0 {
-  background: url("https://images.unsplash.com/photo-1574071318508-e1e19c09958e?w=800&h=600&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/signature/spring-rolls.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.signature-image-1 {
-  background: url("https://images.unsplash.com/photo-1467453678174-768ec283a940?w=800&h=600&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/signature/soup-of-the-day.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.signature-image-2 {
-  background: url("https://images.unsplash.com/photo-1481931098730-318b6f776db0?w=800&h=600&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/signature/chicken-teriyaki.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.signature-image-3 {
-  background: url("https://images.unsplash.com/photo-1588166524941-3bf61a3c37f5?w=800&h=600&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/signature/beef-stir-fry.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.signature-image-4 {
-  background: url("https://images.unsplash.com/photo-1602824597336-53fead25b343?w=800&h=600&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/signature/ice-cream.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.signature-image-5 {
-  background: url("https://images.unsplash.com/photo-1578985545062-69928f1d8581?w=800&h=600&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/signature/fresh-juice.jpg") center/cover no-repeat !important;
 }
 
 /* Daily Specials Images */
@@ -932,6 +926,19 @@ section.animate-in .signature-card:nth-child(6) {
   position: relative;
   height: 250px;
   overflow: hidden;
+  background: #1c1917;
+}
+
+.dish-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.signature-card:hover .dish-img {
+  transform: scale(1.06);
 }
 
 .dish-image
