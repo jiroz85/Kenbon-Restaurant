@@ -753,16 +753,36 @@ export function LandingPage() {
             <div className="journey-visuals">
               <div className="visual-grid">
                 <div className="visual-item">
-                  <div className="image-placeholder kitchen"></div>
+                  <img
+                    src="/images/journey/kitchen.jpg"
+                    alt="Master culinary open kitchen at Kenbon"
+                    className="visual-img"
+                    loading="lazy"
+                  />
                 </div>
                 <div className="visual-item">
-                  <div className="image-placeholder chef"></div>
+                  <img
+                    src="/images/journey/chef.jpg"
+                    alt="Head chef crafting dishes with precision"
+                    className="visual-img"
+                    loading="lazy"
+                  />
                 </div>
                 <div className="visual-item">
-                  <div className="image-placeholder dining"></div>
+                  <img
+                    src="/images/journey/dining.jpg"
+                    alt="Warm and intimate dining room atmosphere"
+                    className="visual-img"
+                    loading="lazy"
+                  />
                 </div>
                 <div className="visual-item">
-                  <div className="image-placeholder ingredients"></div>
+                  <img
+                    src="/images/journey/ingredients.jpg"
+                    alt="Fresh organic farm-to-table ingredients"
+                    className="visual-img"
+                    loading="lazy"
+                  />
                 </div>
               </div>
             </div>
