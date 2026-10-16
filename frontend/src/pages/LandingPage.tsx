@@ -283,6 +283,97 @@ export function LandingPage() {
 
   // Get signature items from real menu data
   const signatureDishes = useMemo(() => {
+    const signatureImageMap: Record<string, string> = {
+      "Spring Rolls": "/images/signature/spring-rolls.jpg",
+      "Soup of the Day": "/images/signature/soup-of-the-day.jpg",
+      "Chicken Teriyaki": "/images/signature/chicken-teriyaki.jpg",
+      "Beef Stir Fry": "/images/signature/beef-stir-fry.jpg",
+      "Vegetable Curry": "/images/signature/beef-stir-fry.jpg",
+      "Ice Cream": "/images/signature/ice-cream.jpg",
+      "Cheesecake": "/images/signature/ice-cream.jpg",
+      "Fresh Juice": "/images/signature/fresh-juice.jpg",
+    };
+
+    const defaultImages = [
+      "/images/signature/spring-rolls.jpg",
+      "/images/signature/soup-of-the-day.jpg",
+      "/images/signature/chicken-teriyaki.jpg",
+      "/images/signature/beef-stir-fry.jpg",
+      "/images/signature/ice-cream.jpg",
+      "/images/signature/fresh-juice.jpg",
+    ];
+
+    if (!menuItems || menuItems.length === 0) {
+      return [
+        {
+          name: "Crispy Spring Rolls",
+          description: "Golden fried rolls filled with fresh seasonal vegetables and glass noodles",
+          price: "ETB 95",
+          badge: "Chef's Choice",
+          chefNotes: "Served with house-made sweet chili sauce",
+          pairing: "White wine",
+          category: "starter",
+          id: "default-starter-1",
+          image: defaultImages[0],
+        },
+        {
+          name: "Artisan Soup of the Day",
+          description: "Slow-simmered velvety soup with fresh garden herbs and warm sourdough",
+          price: "ETB 110",
+          badge: "Daily Fresh",
+          chefNotes: "Prepared every morning with fresh garden ingredients",
+          pairing: "White wine",
+          category: "starter",
+          id: "default-starter-2",
+          image: defaultImages[1],
+        },
+        {
+          name: "Glazed Chicken Teriyaki",
+          description: "Tender grilled chicken fillet in sweet savory glaze with sesame seeds",
+          price: "ETB 240",
+          badge: "Popular",
+          chefNotes: "Marinated 24 hours in authentic tare glaze",
+          pairing: "Red wine",
+          category: "main",
+          id: "default-main-1",
+          image: defaultImages[2],
+        },
+        {
+          name: "Prime Beef Stir Fry",
+          description: "Sizzling prime beef strips with crisp bell peppers, sweet onions, and aromatic ginger",
+          price: "ETB 290",
+          badge: "Signature",
+          chefNotes: "Wok-seared over high flame for deep smoky flavor",
+          pairing: "Red wine",
+          category: "main",
+          id: "default-main-2",
+          image: defaultImages[3],
+        },
+        {
+          name: "Artisanal Ice Cream",
+          description: "Velvety scoops of Madagascar vanilla with fresh berries and wild mint",
+          price: "ETB 85",
+          badge: "Sweet Finale",
+          chefNotes: "Crafted in small batches with local organic cream",
+          pairing: "Dessert wine",
+          category: "dessert",
+          id: "default-dessert-1",
+          image: defaultImages[4],
+        },
+        {
+          name: "Fresh Squeezed Tropical Juice",
+          description: "Vibrant blend of fresh hand-pressed mango, orange, and passion fruit",
+          price: "ETB 75",
+          badge: "Refreshing",
+          chefNotes: "100% natural fruit with zero added sugar",
+          pairing: "Perfect match",
+          category: "drink",
+          id: "default-drink-1",
+          image: defaultImages[5],
+        },
+      ];
+    }
+
     const starters = menuItems
       .filter(
         (item) =>
@@ -311,15 +402,6 @@ export function LandingPage() {
       )
       .slice(0, 1);
 
-    const signatureImageMap: Record<string, string> = {
-      "spring rolls": "/images/signature/spring-rolls.jpg",
-      "soup of the day": "/images/signature/soup-of-the-day.jpg",
-      "chicken teriyaki": "/images/signature/chicken-teriyaki.jpg",
-      "beef stir fry": "/images/signature/beef-stir-fry.jpg",
-      "ice cream": "/images/signature/ice-cream.jpg",
-      "fresh juice": "/images/signature/fresh-juice.jpg",
-    };
-
     // Transform menu items to signature dish format
     const transformToSignature = (item: MenuItem, category: string, index: number) => ({
       name: item.name,
@@ -327,7 +409,6 @@ export function LandingPage() {
       price: `ETB ${item.price}`,
       badge: item.isPopular ? "Popular" : "Chef's Choice",
       chefNotes: "Prepared with fresh ingredients",
-      image: item.image || signatureImageMap[item.name.toLowerCase()] || `/images/signature/${["spring-rolls", "soup-of-the-day", "chicken-teriyaki", "beef-stir-fry", "ice-cream", "fresh-juice"][index % 6]}.jpg`,
       pairing:
         category === "starter"
           ? "White wine"
@@ -338,6 +419,7 @@ export function LandingPage() {
               : "Perfect match",
       category: category,
       id: item.id,
+      image: item.image || signatureImageMap[item.name] || defaultImages[index % defaultImages.length],
     });
 
     return [
