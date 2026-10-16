@@ -244,6 +244,7 @@ export function LandingPage() {
       price: "ETB 185",
       story: "Inspired by today's morning market visit",
       availability: "Only 8 servings left",
+      image: "/images/specials/chefs-tasting-menu.jpg",
     },
     {
       name: "Seafood Tower",
@@ -251,6 +252,7 @@ export function LandingPage() {
       price: "ETB 125",
       story: "Fresh catch from our local fisherman",
       availability: "Available today only",
+      image: "/images/specials/seafood-tower.jpg",
     },
     {
       name: "Wine Pairing Dinner",
@@ -258,6 +260,7 @@ export function LandingPage() {
       price: "ETB 225",
       story: "Featured vintner: Château Margaux 2018",
       availability: "6 seats remaining",
+      image: "/images/specials/wine-pairing.jpg",
     },
   ];
 
@@ -530,9 +533,18 @@ export function LandingPage() {
               >
                 <div className="special-content">
                   <div className="special-image">
-                    <div
-                      className={`image-placeholder special-image-${index}`}
-                    ></div>
+                    {special.image ? (
+                      <img
+                        src={special.image}
+                        alt={special.name}
+                        className="special-img"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div
+                        className={`image-placeholder special-image-${index}`}
+                      ></div>
+                    )}
                   </div>
                   <div className="special-info">
                     <span className="availability-badge">

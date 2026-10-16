@@ -174,18 +174,18 @@
 
 /* Daily Specials Images */
 .image-placeholder.special-image-0 {
-  background: url("https://images.unsplash.com/photo-1555939594-58d4cb2801c1?w=800&h=600&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/specials/chefs-tasting-menu.jpg")
+    center/cover no-repeat !important;
 }
 
 .image-placeholder.special-image-1 {
-  background: url("https://images.unsplash.com/photo-1544025392-8367ccb5eca0?w=800&h=600&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/specials/seafood-tower.jpg")
+    center/cover no-repeat !important;
 }
 
 .image-placeholder.special-image-2 {
-  background: url("https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=800&h=600&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/specials/wine-pairing.jpg")
+    center/cover no-repeat !important;
 }
 
 /* Menu Item Images - Starters */
@@ -1042,6 +1042,21 @@ section.animate-in .signature-card:nth-child(6) {
   height: 350px;
   overflow: hidden;
   border-radius: 12px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  background: #1c1917;
+}
+
+.special-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.special-content:hover .special-img {
+  transform: scale(1.05);
 }
 
 .special-image
