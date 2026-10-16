@@ -40,6 +40,55 @@ const heroSlides = [
   },
 ];
 
+const menuItemImageMap: Record<string, string> = {
+  "Spring Rolls": "/images/menu/spring-rolls.jpg",
+  "Soup of the Day": "/images/menu/soup-of-the-day.jpg",
+  "Chicken Teriyaki": "/images/menu/chicken-teriyaki.jpg",
+  "Beef Stir Fry": "/images/menu/beef-stir-fry.jpg",
+  "Vegetable Curry": "/images/menu/vegetable-curry.jpg",
+  "Ice Cream": "/images/menu/ice-cream.jpg",
+  "Cheesecake": "/images/menu/cheesecake.jpg",
+  "Fresh Juice": "/images/menu/fresh-juice.jpg",
+  "aaa": "/images/menu/coffee.jpg",
+  "caa": "/images/menu/cola.jpg",
+  "Green Tea": "/images/menu/green-tea.jpg",
+  "Soda": "/images/menu/soda.jpg",
+};
+
+const defaultMenuImages = [
+  "/images/menu/spring-rolls.jpg",
+  "/images/menu/soup-of-the-day.jpg",
+  "/images/menu/chicken-teriyaki.jpg",
+  "/images/menu/beef-stir-fry.jpg",
+  "/images/menu/vegetable-curry.jpg",
+  "/images/menu/ice-cream.jpg",
+  "/images/menu/cheesecake.jpg",
+  "/images/menu/fresh-juice.jpg",
+  "/images/menu/coffee.jpg",
+  "/images/menu/cola.jpg",
+  "/images/menu/green-tea.jpg",
+  "/images/menu/soda.jpg",
+];
+
+function getMenuItemImage(item: MenuItem, index: number): string {
+  if (item.image) return item.image;
+  if (menuItemImageMap[item.name]) return menuItemImageMap[item.name];
+  const cat = (item.category?.name || "").toLowerCase();
+  if (cat.includes("starter") || cat.includes("appetizer")) {
+    return "/images/menu/spring-rolls.jpg";
+  }
+  if (cat.includes("main") || cat.includes("entree")) {
+    return "/images/menu/chicken-teriyaki.jpg";
+  }
+  if (cat.includes("dessert")) {
+    return "/images/menu/ice-cream.jpg";
+  }
+  if (cat.includes("drink") || cat.includes("beverage")) {
+    return "/images/menu/fresh-juice.jpg";
+  }
+  return defaultMenuImages[index % defaultMenuImages.length];
+}
+
 export function LandingPage() {
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
@@ -748,17 +797,12 @@ export function LandingPage() {
               .map((item: MenuItem, index: number) => (
                 <div key={item.id} className="menu-item">
                   <div className="menu-item-image">
-                    {item.image ? (
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="menu-item-img"
-                      />
-                    ) : (
-                      <div
-                        className={`image-placeholder menu-image-${index}`}
-                      ></div>
-                    )}
+                    <img
+                      src={getMenuItemImage(item, index)}
+                      alt={item.name}
+                      className="menu-item-img"
+                      loading="lazy"
+                    />
                   </div>
                   <div className="menu-item-info">
                     <h4 className="menu-item-name">{item.name}</h4>

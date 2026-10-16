@@ -182,68 +182,53 @@
     center/cover no-repeat !important;
 }
 
-/* Menu Item Images - Starters */
+/* Menu Item Images - Reliable Local Assets */
 .image-placeholder.menu-image-0 {
-  background: url("https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/spring-rolls.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.menu-image-1 {
-  background: url("https://images.unsplash.com/photo-1546833999-b9f581a199fb?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/soup-of-the-day.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.menu-image-2 {
-  background: url("https://images.unsplash.com/photo-1578985545062-69928f1d8581?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/chicken-teriyaki.jpg") center/cover no-repeat !important;
 }
 
-/* Menu Item Images - Mains */
 .image-placeholder.menu-image-3 {
-  background: url("https://images.unsplash.com/photo-1467453678174-768ec283a940?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/beef-stir-fry.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.menu-image-4 {
-  background: url("https://images.unsplash.com/photo-1558030006-44eb819e2826?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/vegetable-curry.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.menu-image-5 {
-  background: url("https://images.unsplash.com/photo-1574071318508-e1e19c09958e?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/ice-cream.jpg") center/cover no-repeat !important;
 }
 
-/* Menu Item Images - Desserts */
 .image-placeholder.menu-image-6 {
-  background: url("https://images.unsplash.com/photo-1488900128323-21503983a07e?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/cheesecake.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.menu-image-7 {
-  background: url("https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/fresh-juice.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.menu-image-8 {
-  background: url("https://images.unsplash.com/photo-1563729784474-d77dbb933c9f?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/coffee.jpg") center/cover no-repeat !important;
 }
 
-/* Menu Item Images - Beverages */
 .image-placeholder.menu-image-9 {
-  background: url("https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/cola.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.menu-image-10 {
-  background: url("https://images.unsplash.com/photo-1541546006161-7bf6d5c550a5?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/green-tea.jpg") center/cover no-repeat !important;
 }
 
 .image-placeholder.menu-image-11 {
-  background: url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop&auto=format")
-    center/cover !important;
+  background: url("/images/menu/soda.jpg") center/cover no-repeat !important;
 }
 
 /* Journey Visuals */
@@ -1241,6 +1226,20 @@ section.animate-in .signature-card:nth-child(6) {
 .menu-item-image {
   height: 200px;
   overflow: hidden;
+  position: relative;
+  background: #1c1917;
+}
+
+.menu-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-item:hover .menu-item-img {
+  transform: scale(1.06);
 }
 
 .menu-item-image
